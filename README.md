@@ -1,6 +1,7 @@
 # tfversion
 
-`tfversion` is a command created to switch between different versions of [terraform](https://www.terraform.io).
+`tfversion` is a command created to switch between different versions of [terraform](https://www.terraform.io).   
+Functional started from version 0.7.
 
 ## Usage
 
