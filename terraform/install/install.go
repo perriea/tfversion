@@ -17,7 +17,7 @@ func check(e error) {
     }
 }
 
-func unzip(archive, target string) error {
+func Unzip(archive, target string) error {
 	reader, err := zip.OpenReader(archive)
 	check(err)
 
@@ -60,10 +60,12 @@ func Run()  {
 
   good := color.New(color.FgGreen, color.Bold)
 
+  // Unzip zip archive
   fmt.Printf("Unzip file ...\n")
-  err = unzip("/tmp/terraform-" + os.Args[1] + ".zip", "/tmp/")
+  err = Unzip("/tmp/terraform-" + os.Args[1] + ".zip", "/tmp/")
   check(err)
 
+  // Create alias command
   fmt.Printf("Install the binary file ...\n")
   cmd = exec.Command("alias", "terraform=/tmp/terraform")
   err = cmd.Run()

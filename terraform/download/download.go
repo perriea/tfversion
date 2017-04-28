@@ -25,12 +25,17 @@ func Run() {
 
   fatal := color.New(color.FgRed, color.Bold)
 
+  // Verify number parameters
   if len(os.Args) == 2 {
+    
+      // Formulation URL Terraform Website
       fmt.Printf("Attempting to download version: %s\n", os.Args[1])
       url_tf := "https://releases.hashicorp.com/terraform/" + os.Args[1] + "/terraform_" + os.Args[1] + "_" + runtime.GOOS + "_" + runtime.GOARCH + ".zip"
       resp, err := http.Get(url_tf)
       check(err)
       defer resp.Body.Close()
+
+      // Verify code equal 200
       if (err == nil) && (resp.StatusCode == 200) {
           out, err := os.Create("/tmp/terraform-" + os.Args[1] + ".zip")
           check(err)
