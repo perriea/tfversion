@@ -12,12 +12,13 @@ import (
 var (
     url_tf    string
     cleaned   []string
+    available []string
     tfversion []string
-    fatal     *color.Color
+    good      *color.Color
 )
 
 func init()  {
-    fatal = color.New(color.FgRed, color.Bold)
+    good = color.New(color.FgGreen, color.Bold)
     url_tf = "https://releases.hashicorp.com/terraform/"
 }
 
@@ -28,12 +29,13 @@ func check(e error) {
 }
 
 func stringInSlice(str string, list []string) bool {
-   for _, v := range list {
-       if v == str {
-         return true
-       }
-   }
-   return false
+    for _, v := range list {
+        if v == str {
+            return true
+        }
+    }
+
+    return false
 }
 
 func Run()  {
@@ -47,20 +49,22 @@ func Run()  {
         r, err := regexp.Compile("[0-9]+\\.[0-9]+\\.[0-9]+(-(rc|beta)[0-9]+)?")
         check(err)
 
+        // Convert byte to string
         buf := new(bytes.Buffer)
     	  buf.ReadFrom(resp.Body)
     	  newStr := buf.String()
 
-        fmt.Printf("Versions availables :\n")
+        good.Printf("Versions availables of terraform (tfversion support <= 0.7) :\n")
         tfversion = r.FindAllString(newStr, -1)
 
+        // Clean doublon
        	for _, value := range tfversion {
-
-       		if !stringInSlice(value, cleaned) {
-       			cleaned = append(cleaned, value)
-       		}
+       	    if !stringInSlice(value, cleaned) {
+         		     cleaned = append(cleaned, value)
+       	    }
        	}
 
+        // Show versions
      	  fmt.Println(cleaned)
     }
 }

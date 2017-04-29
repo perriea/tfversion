@@ -54,11 +54,11 @@ func Run(version string) bool {
 
             return true
         } else {
-            fatal.Printf("Download impossible, this version %s doesn't exist !", version)
+            fatal.Printf("[FATAL] Download impossible, this version doesn't exist !")
             return false
         }
     } else {
-        fatal.Printf("This version (%s) is not supported !", version)
+        fatal.Printf("[ERROR] This version (%s) is not supported !", version)
         return false
     }
 

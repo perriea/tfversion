@@ -35,6 +35,6 @@ func main()  {
           tfinstall.Run(version)
         }
     } else {
-        fatal.Println("Error, too many argument !")
+        fatal.Println("[ERROR] Too many argument or nothing !")
     }
 }
