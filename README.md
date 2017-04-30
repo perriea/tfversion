@@ -40,10 +40,8 @@ Versions availables of terraform (tfversion support <= 0.7) :
 ```
 
 ## Roadmap
-
-- Check if the internet connection is ok or not,  
+  
 - Switch between version without internet (if the zip archive is allready in folder tmp),
-- ~~List the different versions of terraform online,~~
 - List the local versions of terraform,
 - Command cleanup tmp folder,
 - Install script.
