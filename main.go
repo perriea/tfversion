@@ -2,32 +2,34 @@ package main
 
 import (
     "flag"
-    "errors"
 
-    "github.com/fatih/color"
+    "github.com/perriea/tfversion/network"
     "github.com/perriea/tfversion/terraform/download"
     "github.com/perriea/tfversion/terraform/install"
     "github.com/perriea/tfversion/terraform/list"
+    "github.com/perriea/tfversion/error"
 )
 
 var (
     // Errors
-    err_msg string
-    check   bool
-    err     error
-    fatal   *color.Color
+    err_msg           string
+    err_msg_network   string
+    err_network       bool
+    check             bool
+    err               error
     // Flag func version param
-    version string
+    version           string
     // Flag launch func List
-    list    bool
+    list              bool
 )
 
 func init()  {
     check = false
+    err_network = false
 
     // Init show error message
-    fatal = color.New(color.FgRed, color.Bold)
     err_msg = "[ERROR] Too many argument or nothing !"
+    err_msg_network = "[ERROR] No internet connection ..."
 
     // Flags CLI
     flag.BoolVar(&list, "list", false, "List version of terraform")
@@ -37,20 +39,34 @@ func init()  {
 
 func main()  {
 
+    err_network = tfnetwork.Run()
     if list == true && version == "0" {
-        // Show version terraform
-        tflist.Run()
+
+        if err_network {
+            // Show version terraform
+            tflist.Run()
+        } else {
+            // No network
+            tferror.Run(3, err_msg_network)
+        }
+
     } else if list == false && version != "0" {
-        // Lauch Terraform download
-        check = tfdownload.Run(version)
-        // Check if download is done and install
-        if check {
-          tfinstall.Run(version)
+
+        if err_network {
+            // Lauch Terraform download
+            check = tfdownload.Run(version)
+            // Check if download is done and install
+            if check {
+                tfinstall.Run(version)
+            }
+
+        } else {
+            // No network
+            tferror.Run(3, err_msg_network)
         }
+
     } else {
-        err = errors.New(err_msg)
-        if err != nil {
-          fatal.Println(err)
-        }
+        // Error args
+        tferror.Run(2, err_msg)
     }
 }
