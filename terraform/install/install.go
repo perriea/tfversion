@@ -71,5 +71,5 @@ func Run(version string)  {
     err = cmd.Run()
     check(err)
 
-    good.Printf("Installed %s, Thanks ! ♥", version)
+    good.Printf("Installed %s, Thanks ! ♥\n", version)
 }
