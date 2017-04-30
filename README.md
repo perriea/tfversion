@@ -3,6 +3,12 @@
 `tfversion` is a command created to switch between different versions of [terraform](https://www.terraform.io).   
 Functional started from version 0.7.
 
+## Build Project
+
+- [Install Golang](https://golang.org/doc/install) (add var ENV),
+- [Install Govendor](https://github.com/kardianos/govendor),
+- Build `go build .`
+
 ## Usage
 
 ### Install version
@@ -34,6 +40,7 @@ Versions availables of terraform (tfversion support <= 0.7) :
 
 ## Roadmap
 
+- Check if the internet connection is ok or not,  
 - Switch between version without internet (if the zip archive is allready in folder tmp),
 - ~~List the different versions of terraform,~~ (Partial)
 - Install script.
@@ -44,4 +51,10 @@ And other things ...
 
 - [kardianos/govendor](https://github.com/kardianos/govendor),
 - [fatih/color](https://github.com/fatih/color).
+
+## License
+
+The MIT License (MIT)
+
+Copyright (c) 2017 Aurelien Perrier
 
