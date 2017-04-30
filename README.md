@@ -10,10 +10,10 @@ Functional started from version 0.7.
 - Build `go build .`,
 - Add in your `.bashrc` (Linux) or `.bash_profile` : `export PATH=$PATH:~/terraform/bin`
 
-## Roadmap
 
-- Switch between version without internet (if the zip archive is allready in folder tmp),
-- List the local versions of terraform,
+## Roadmap
+  
+- List the local versions of terraform and **show curent version**,
 - Install script.
 
 And other things ...
@@ -28,3 +28,4 @@ And other things ...
 The MIT License (MIT)
 
 Copyright (c) 2017 Aurelien Perrier
+
