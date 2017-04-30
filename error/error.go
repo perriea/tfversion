@@ -2,6 +2,7 @@ package tferror
 
 import (
   "errors"
+  "fmt"
 
   "github.com/fatih/color"
 )
@@ -34,7 +35,7 @@ func Run(level int, message string)  {
           case 2:
               warn.Println(err)
           default:
-              fatal.Println(err)
+              fmt.Println(err)
         }
     }
 }

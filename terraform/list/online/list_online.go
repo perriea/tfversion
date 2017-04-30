@@ -1,4 +1,4 @@
-package tflist
+package tflist_online
 
 import (
     "fmt"
@@ -7,7 +7,6 @@ import (
     "regexp"
     "bytes"
 
-    "github.com/fatih/color"
     "github.com/perriea/tfversion/error"
 )
 
@@ -16,7 +15,6 @@ var (
     cleaned   []string
     available []string
     tfversion []string
-    good      *color.Color
     transport *http.Transport
     client    *http.Client
 )
@@ -27,7 +25,6 @@ func init()  {
     }
     client = &http.Client{Transport: transport}
 
-    good = color.New(color.FgGreen, color.Bold)
     url_tf = "https://releases.hashicorp.com/terraform/"
 }
 
@@ -50,7 +47,7 @@ func Run()  {
 
     // Verify code equal 200
     if (err == nil) && (resp.StatusCode == 200) {
-      
+
         r, err := regexp.Compile("[0-9]+\\.[0-9]+\\.[0-9]+(-(rc|beta)[0-9]+)?")
         tferror.Panic(err)
 
@@ -59,7 +56,7 @@ func Run()  {
     	  buf.ReadFrom(resp.Body)
     	  newStr := buf.String()
 
-        good.Printf("Versions availables of terraform (tfversion support <= 0.7) :\n")
+        tferror.Run(1, "Versions availables of terraform (tfversion support <= 0.7) :")
         tfversion = r.FindAllString(newStr, -1)
 
         // Clean doublon
