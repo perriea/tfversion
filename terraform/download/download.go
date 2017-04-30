@@ -7,6 +7,7 @@ import (
     "runtime"
     "fmt"
     "regexp"
+    "crypto/tls"
 
     "github.com/fatih/color"
 )
@@ -38,7 +39,12 @@ func Run(version string) bool {
         // Formulation URL Terraform Website
         fmt.Printf("Attempting to download version: %s\n", version)
         url_tf = "https://releases.hashicorp.com/terraform/" + version + "/terraform_" + version + "_" + runtime.GOOS + "_" + runtime.GOARCH + ".zip"
-        resp, err := http.Get(url_tf)
+
+        tr := &http.Transport{
+            TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+        }
+        client := &http.Client{Transport: tr}
+        resp, err := client.Get(url_tf)
         check(err)
         defer resp.Body.Close()
 
