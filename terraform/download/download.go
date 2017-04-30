@@ -27,8 +27,6 @@ var (
     client          *http.Client
     resp            *http.Response
     // Errors
-    err_fatal_msg   string
-    err_msg         string
     err             error
 )
 
@@ -43,50 +41,53 @@ func init()  {
     usr, err := user.Current()
     tferror.Panic(err)
     do_path_tf  = usr.HomeDir + "/terraform/tmp/terraform-%s.zip"
-
-    // Color response
-    err_fatal_msg = "[FATAL] Download impossible, this version doesn't exist !"
-    err_msg       = "[ERROR] This version (%s) is not supported !"
 }
 
 func Run(version string) bool {
 
-    match, err := regexp.MatchString("[0-9]+\\.[0-6]+\\.[0-9]+(-(rc|beta)[0-9]+)?", version)
-    tferror.Panic(err)
+    if _, err := os.Stat(fmt.Sprintf(do_path_tf, version)); os.IsNotExist(err) {
 
-    if !match {
-        // Formulation URL Terraform Website
-        fmt.Printf("Attempting to download version: %s\n", version)
-        url_tf = fmt.Sprintf(do_url_tf, version, version, runtime.GOOS, runtime.GOARCH)
-
-        // Request GET URL
-        resp, err = client.Get(url_tf)
+        match, err := regexp.MatchString("[0-9]+\\.[0-6]+\\.[0-9]+(-(rc|beta)[0-9]+)?", version)
         tferror.Panic(err)
-        defer resp.Body.Close()
 
-        // Verify code equal 200
-        if (err == nil) && (resp.StatusCode == 200) {
-            tferror.Run(1, "Start download ...")
-            path_tf = fmt.Sprintf(do_path_tf, version)
-            file_unzip, err = os.Create(path_tf)
+        if !match {
+            // Formulation URL Terraform Website
+            fmt.Printf("Attempting to download version: %s\n", version)
+            url_tf = fmt.Sprintf(do_url_tf, version, version, runtime.GOOS, runtime.GOARCH)
+
+            // Request GET URL
+            resp, err = client.Get(url_tf)
             tferror.Panic(err)
-            defer file_unzip.Close()
+            defer resp.Body.Close()
 
-            // Copy reponse in file
-            _, err = io.Copy(file_unzip, resp.Body)
-            tferror.Panic(err)
+            // Verify code equal 200
+            if (err == nil) && (resp.StatusCode == 200) {
+                tferror.Run(1, "Start download ...")
+                path_tf = fmt.Sprintf(do_path_tf, version)
+                file_unzip, err = os.Create(path_tf)
+                tferror.Panic(err)
+                defer file_unzip.Close()
 
-            return true
+                // Copy reponse in file
+                _, err = io.Copy(file_unzip, resp.Body)
+                tferror.Panic(err)
+
+                return true
+
+            } else {
+                tferror.Run(3, "[ERROR] Download impossible, this version doesn't exist !")
+                return false
+            }
 
         } else {
-            tferror.Run(3, err_fatal_msg)
+            tferror.Run(3, fmt.Sprintf("This version (%s) is not supported !", version))
             return false
         }
 
-    } else {
-        tferror.Run(3, err_msg)
         return false
-    }
 
-    return false
+    } else {
+        tferror.Run(0, "Already in cache ...")
+        return true
+    }
 }
