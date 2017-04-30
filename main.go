@@ -19,7 +19,7 @@ var (
     err               error
     // Flag func version param
     path_bin          string
-    tmp_bin           string
+    path_tmp          string
     version           string
     // Flag launch func List
     list_online       bool
@@ -33,13 +33,13 @@ func init()  {
 
     // Paths
     path_bin = "/terraform/bin/"
-    tmp_bin = "/terraform/tmp/"
+    path_tmp = "/terraform/tmp/"
 
     // Flags CLI
     flag.BoolVar(&list_online, "list-online", false, "List online version of terraform")
     flag.BoolVar(&list_offline, "list-offline", false, "List local version of terraform")
     flag.BoolVar(&cleanup, "cleanup", false, "Clean cache (tmp files)")
-    flag.StringVar(&version, "version", "0", "Version of terraform to install or switch")
+    flag.StringVar(&version, "install", "0", "Version of terraform to install or switch")
     flag.Parse()
 }
 
@@ -63,7 +63,7 @@ func main()  {
 
         if err_network {
             // Lauch Terraform download
-            tffolder.Run(tmp_bin, 0755)
+            tffolder.Run(path_tmp, 0755)
             check = tfdownload.Run(version)
 
             // Check if download is done and install
