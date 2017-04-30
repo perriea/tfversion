@@ -4,67 +4,87 @@ import (
     "net/http"
     "io"
     "os"
+    "os/user"
     "runtime"
     "fmt"
     "regexp"
     "crypto/tls"
 
-    "github.com/fatih/color"
+    "github.com/perriea/tfversion/error"
 )
 
 var (
-    url_tf    string
-    version   string
-    denied    []string
-    fatal     *color.Color
-    good      *color.Color
+    // URL and Path (file)
+    do_url_tf       string
+    url_tf          string
+    do_path_tf      string
+    path_tf         string
+    file_unzip      *os.File
+    // check if format version is *.*.* and more ...
+    match           bool
+    // HTTP request
+    transport       *http.Transport
+    client          *http.Client
+    resp            *http.Response
+    // Errors
+    err_fatal_msg   string
+    err_msg         string
+    err             error
 )
 
 func init()  {
-    fatal = color.New(color.FgRed, color.Bold)
-    good = color.New(color.FgGreen, color.Bold)
-}
-
-func check(e error) {
-    if e != nil {
-        panic(e)
+    // Dont check certificate SSL + new path
+    transport = &http.Transport{
+        TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
     }
+    client      = &http.Client{Transport: transport}
+    do_url_tf   = "https://releases.hashicorp.com/terraform/%s/terraform_%s_%s_%s.zip"
+
+    usr, err := user.Current()
+    tferror.Panic(err)
+    do_path_tf  = usr.HomeDir + "/terraform/tmp/terraform-%s.zip"
+
+    // Color response
+    err_fatal_msg = "[FATAL] Download impossible, this version doesn't exist !"
+    err_msg       = "[ERROR] This version (%s) is not supported !"
 }
 
 func Run(version string) bool {
+
     match, err := regexp.MatchString("[0-9]+\\.[0-6]+\\.[0-9]+(-(rc|beta)[0-9]+)?", version)
-    check(err)
+    tferror.Panic(err)
 
     if !match {
         // Formulation URL Terraform Website
         fmt.Printf("Attempting to download version: %s\n", version)
-        url_tf = "https://releases.hashicorp.com/terraform/" + version + "/terraform_" + version + "_" + runtime.GOOS + "_" + runtime.GOARCH + ".zip"
+        url_tf = fmt.Sprintf(do_url_tf, version, version, runtime.GOOS, runtime.GOARCH)
 
-        tr := &http.Transport{
-            TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-        }
-        client := &http.Client{Transport: tr}
-        resp, err := client.Get(url_tf)
-        check(err)
+        // Request GET URL
+        resp, err = client.Get(url_tf)
+        tferror.Panic(err)
         defer resp.Body.Close()
 
         // Verify code equal 200
         if (err == nil) && (resp.StatusCode == 200) {
-            good.Printf("Start download ...\n")
-            out, err := os.Create("/tmp/terraform-" + version + ".zip")
-            check(err)
-            defer out.Close()
+            tferror.Run(1, "Start download ...")
+            path_tf = fmt.Sprintf(do_path_tf, version)
+            file_unzip, err = os.Create(path_tf)
+            tferror.Panic(err)
+            defer file_unzip.Close()
 
-            _, err = io.Copy(out, resp.Body)
-            check(err)
+            // Copy reponse in file
+            _, err = io.Copy(file_unzip, resp.Body)
+            tferror.Panic(err)
 
             return true
+
         } else {
-            fatal.Printf("[FATAL] Download impossible, this version doesn't exist !")
+            tferror.Run(3, err_fatal_msg)
             return false
         }
+
     } else {
-        fatal.Printf("[ERROR] This version (%s) is not supported !", version)
+        tferror.Run(3, err_msg)
         return false
     }
 

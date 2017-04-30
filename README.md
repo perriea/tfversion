@@ -7,7 +7,8 @@ Functional started from version 0.7.
 
 - [Install Golang](https://golang.org/doc/install) (add var ENV),
 - [Install Govendor](https://github.com/kardianos/govendor),
-- Build `go build .`
+- Build `go build .`,
+- Add in your `.bashrc` (Linux) or `.bash_profile` : `export PATH=$PATH:~/terraform/bin`
 
 ## Usage
 
@@ -23,7 +24,7 @@ Attempting to download version: 0.9.4
 Start download ...
 Unzip file ...
 Install the binary file ...
-Installed 0.9.4, Thanks ! ♥ 
+Installed 0.9.4, Thanks ! â™¥ 
 ```
 
 ### List versions
@@ -39,10 +40,10 @@ Versions availables of terraform (tfversion support <= 0.7) :
 ```
 
 ## Roadmap
-
-- Check if the internet connection is ok or not,  
+  
 - Switch between version without internet (if the zip archive is allready in folder tmp),
-- ~~List the different versions of terraform,~~ (Partial)
+- List the local versions of terraform,
+- Command cleanup tmp folder,
 - Install script.
 
 And other things ...
