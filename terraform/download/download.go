@@ -4,6 +4,7 @@ import (
     "net/http"
     "io"
     "os"
+    "os/user"
     "runtime"
     "fmt"
     "regexp"
@@ -38,7 +39,10 @@ func init()  {
     }
     client      = &http.Client{Transport: transport}
     do_url_tf   = "https://releases.hashicorp.com/terraform/%s/terraform_%s_%s_%s.zip"
-    do_path_tf  = "/tmp/terraform-%s.zip"
+
+    usr, err := user.Current()
+    tferror.Panic(err)
+    do_path_tf  = usr.HomeDir + "/terraform/tmp/terraform-%s.zip"
 
     // Color response
     err_fatal_msg = "[FATAL] Download impossible, this version doesn't exist !"
