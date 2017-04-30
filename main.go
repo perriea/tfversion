@@ -39,7 +39,7 @@ func init()  {
     flag.BoolVar(&list_online, "list-online", false, "List online version of terraform")
     flag.BoolVar(&list_offline, "list-offline", false, "List local version of terraform")
     flag.BoolVar(&cleanup, "cleanup", false, "Clean cache (tmp files)")
-    flag.StringVar(&version, "version", "0", "Version of terraform to install or switch")
+    flag.StringVar(&version, "install", "0", "Version of terraform to install or switch")
     flag.Parse()
 }
 
