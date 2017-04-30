@@ -34,6 +34,8 @@ func Run(level int, message string)  {
               good.Println(err)
           case 2:
               warn.Println(err)
+          case 3:
+              fatal.Println(err)
           default:
               fmt.Println(err)
         }
