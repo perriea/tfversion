@@ -1,35 +1,75 @@
 package tfinstall
 
 import (
-  "os/user"
+  "archive/zip"
+  "os"
+  "io"
+  "path/filepath"
+  "os/exec"
   "fmt"
 
-  "github.com/perriea/tfversion/system/zip"
   "github.com/perriea/tfversion/error"
 )
 
-var (
-    path_bin  string
-    path_zip  string
-    usr       *user.User
+func check(e error) {
+    if e != nil {
+        panic(e)
+    }
+}
 
-    err       error
-)
+func Unzip(archive, target string) error {
 
-func init()  {
-  
-    usr, err = user.Current()
-    tferror.Panic(err)
+  	reader, err := zip.OpenReader(archive)
+  	tferror.Panic(err)
 
-    path_zip = usr.HomeDir + "/terraform/tmp/terraform-%s.zip"
-    path_bin = usr.HomeDir + "/terraform/bin/"
+  	if err := os.MkdirAll(target, 0755); err != nil {
+  		  return err
+  	}
+
+  	for _, file := range reader.File {
+
+    		path := filepath.Join(target, file.Name)
+    		if file.FileInfo().IsDir() {
+      			os.MkdirAll(path, file.Mode())
+      			continue
+    		}
+
+    		fileReader, err := file.Open()
+    		tferror.Panic(err)
+    		defer fileReader.Close()
+
+    		targetFile, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, file.Mode())
+    		tferror.Panic(err)
+    		defer targetFile.Close()
+
+    		if _, err := io.Copy(targetFile, fileReader); err != nil {
+    			   return err
+    		}
+
+        err = os.Remove(archive)
+        tferror.Panic(err)
+  	}
+
+  	return nil
 }
 
 func Run(version string)  {
+
+    var (
+      err error
+      cmd *exec.Cmd
+    )
+
     // Unzip zip archive
-    fmt.Println("Unzip file ...")
-    tfzip.Run(fmt.Sprintf(path_zip, version), path_bin)
-    fmt.Println("Install the binary file ...")
+    fmt.Printf("Unzip file ...\n")
+    err = Unzip("/tmp/terraform-" + version + ".zip", "/tmp/")
+    tferror.Panic(err)
+
+    // Create alias command
+    fmt.Printf("Install the binary file ...\n")
+    cmd = exec.Command("alias", "terraform=/tmp/terraform")
+    err = cmd.Run()
+    tferror.Panic(err)
 
     tferror.Run(1, fmt.Sprintf("Installed %s, Thanks ! ♥\n", version))
 }
