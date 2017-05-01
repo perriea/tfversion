@@ -39,7 +39,7 @@ func stringInSlice(str string, list []string) bool {
     return false
 }
 
-func ListOff()  {
+func ListOn()  {
 
     resp, err := client.Get(url_tf)
     tferror.Panic(err)

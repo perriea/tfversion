@@ -25,7 +25,7 @@ func init()  {
     path = usr.HomeDir + "/terraform/tmp/"
 }
 
-func ListOn()  {
+func ListOff()  {
 
     r, err := regexp.Compile("[0-9]+\\.[0-9]+\\.[0-9]+(-(rc|beta)[0-9]+)?")
     tferror.Panic(err)
@@ -34,11 +34,15 @@ func ListOn()  {
 
     files, err := ioutil.ReadDir(path)
     tferror.Panic(err)
-    for _, f := range files {
-        tfversion = r.FindString(f.Name())
-        tferror.Run(-1, tfversion)
 
-        count++
+    for _, f := range files {
+
+        tfversion = r.FindString(f.Name())
+        if tfversion != "" {
+
+            tferror.Run(-1, tfversion)
+            count++
+        }
     }
 
     if count == 0 {

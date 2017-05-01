@@ -34,8 +34,8 @@ func init()  {
     path_bin = "/terraform/bin/"
     path_tmp = "/terraform/tmp/"
     // Flags CLI
-    flag.BoolVar(&list_online, "list-online", false, "List online version of terraform")
-    flag.BoolVar(&list_offline, "list-offline", false, "List local version of terraform")
+    flag.BoolVar(&list_online, "liston", false, "List online version of terraform")
+    flag.BoolVar(&list_offline, "listoff", false, "List local version of terraform")
     flag.BoolVar(&cleanup, "cleanup", false, "Clean cache (tmp files)")
     flag.StringVar(&install, "install", "0", "Version of terraform to install or switch")
     flag.Parse()
@@ -81,6 +81,7 @@ func main()  {
         tflist.Cleanup()
 
     } else {
+        // Show version
         ShowVersion()
     }
 }
