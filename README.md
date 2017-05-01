@@ -10,6 +10,19 @@ Functional started from version 0.7.
 - Build `go build .`,
 - Add in your `.bashrc` (Linux) or `.bash_profile` : `export PATH=$PATH:~/terraform/bin`
 
+## Docker
+
+### Require
+
+- Docker,
+- AWS credidencial (`~/.aws`),
+- SSH folder (`~/.ssh`).
+
+### Install
+
+Pull image `docker pull perriea/tfversion`.   
+Execute command in the terminal : `docker run -it -v ~/.aws:/root/.aws -v ~/.ssh:/root/.ssh perriea/tfversion sh`.
+
 
 ## Roadmap
   
