@@ -20,7 +20,7 @@ var (
     // Flag func version param
     path_bin          string
     path_tmp          string
-    version           string
+    install           string
     // Flag launch func List
     list_online       bool
     list_offline      bool
@@ -28,23 +28,22 @@ var (
 )
 
 func init()  {
+    // Simply error
     check = false
     err_network = false
-
     // Paths
     path_bin = "/terraform/bin/"
     path_tmp = "/terraform/tmp/"
-
     // Flags CLI
     flag.BoolVar(&list_online, "list-online", false, "List online version of terraform")
     flag.BoolVar(&list_offline, "list-offline", false, "List local version of terraform")
     flag.BoolVar(&cleanup, "cleanup", false, "Clean cache (tmp files)")
-    flag.StringVar(&version, "install", "0", "Version of terraform to install or switch")
+    flag.StringVar(&install, "install", "0", "Version of terraform to install or switch")
     flag.Parse()
 }
 
 func main()  {
-
+    // Check if internet is available (releases.hashicorp.com)
     err_network = tfnetwork.Run()
     if list_online == true {
 
@@ -59,17 +58,18 @@ func main()  {
     } else if list_offline == true {
         // List all versions local
         tflist_offline.Run()
-    } else if version != "0" {
+
+    } else if install != "0" {
 
         if err_network {
             // Lauch Terraform download
             tffolder.Run(path_tmp, 0755)
-            check = tfdownload.Run(version)
+            check = tfdownload.Run(install)
 
             // Check if download is done and install
             if check {
                 tffolder.Run(path_bin, 0755)
-                tfinstall.Run(version)
+                tfinstall.Run(install)
             }
 
         } else {
@@ -78,9 +78,10 @@ func main()  {
         }
 
     } else if cleanup {
+        // Delete all cache
         tflist_offline.Cleanup()
+
     } else {
-        // Error args
-        tferror.Run(2, "[ERROR] Too many argument or nothing !")
+        ShowVersion()
     }
 }
