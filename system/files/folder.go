@@ -1,4 +1,4 @@
-package tffolder
+package tffiles
 
 import (
   "os"
@@ -17,7 +17,7 @@ func init()  {
     tferror.Panic(err)
 }
 
-func Run(name string, chmod int) {
+func CreateFolder(name string, chmod int) {
     err = os.MkdirAll(usr.HomeDir + name, os.FileMode(chmod))
     tferror.Panic(err)
 }

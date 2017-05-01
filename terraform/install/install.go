@@ -5,7 +5,7 @@ import (
   "fmt"
 
   "github.com/perriea/tfversion/error"
-  "github.com/perriea/tfversion/system/zip"
+  "github.com/perriea/tfversion/system/files"
 )
 
 var (
@@ -27,7 +27,7 @@ func Run(version string)  {
 
     // Unzip zip archive
     fmt.Printf("Unzip file ...\n")
-    tfzip.Run(fmt.Sprintf(path_zip, version), path_bin)
+    tffiles.UnZip(fmt.Sprintf(path_zip, version), path_bin)
     fmt.Printf("Install the binary file ...\n")
 
     tferror.Run(1, fmt.Sprintf("Installed %s, Thanks ! ♥\n", version))

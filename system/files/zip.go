@@ -1,4 +1,4 @@
-package tfzip
+package tffiles
 
 import (
   "archive/zip"
@@ -9,7 +9,7 @@ import (
   "github.com/perriea/tfversion/error"
 )
 
-func Run(archive, target string) {
+func UnZip(archive, target string) {
 
   	reader, err := zip.OpenReader(archive)
   	tferror.Panic(err)
