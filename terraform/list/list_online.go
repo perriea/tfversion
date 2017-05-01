@@ -1,4 +1,4 @@
-package tflist_online
+package tflist
 
 import (
     "fmt"
@@ -14,7 +14,7 @@ var (
     url_tf    string
     cleaned   []string
     available []string
-    tfversion []string
+    tfversions []string
     transport *http.Transport
     client    *http.Client
 )
@@ -39,7 +39,7 @@ func stringInSlice(str string, list []string) bool {
     return false
 }
 
-func Run()  {
+func ListOff()  {
 
     resp, err := client.Get(url_tf)
     tferror.Panic(err)
@@ -57,10 +57,10 @@ func Run()  {
     	  newStr := buf.String()
 
         tferror.Run(1, "Versions availables of terraform (tfversion support <= 0.7) :")
-        tfversion = r.FindAllString(newStr, -1)
+        tfversions = r.FindAllString(newStr, -1)
 
         // Clean doublon
-       	for _, value := range tfversion {
+       	for _, value := range tfversions {
        	    if !stringInSlice(value, cleaned) {
          		     cleaned = append(cleaned, value)
        	    }

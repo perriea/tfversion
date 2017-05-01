@@ -1,4 +1,4 @@
-package tflist_offline
+package tflist
 
 import (
     "regexp"
@@ -25,7 +25,7 @@ func init()  {
     path = usr.HomeDir + "/terraform/tmp/"
 }
 
-func Run()  {
+func ListOn()  {
 
     r, err := regexp.Compile("[0-9]+\\.[0-9]+\\.[0-9]+(-(rc|beta)[0-9]+)?")
     tferror.Panic(err)
