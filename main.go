@@ -6,9 +6,8 @@ import (
     "github.com/perriea/tfversion/system/network"
     "github.com/perriea/tfversion/terraform/download"
     "github.com/perriea/tfversion/terraform/install"
-    "github.com/perriea/tfversion/terraform/list/online"
-    "github.com/perriea/tfversion/terraform/list/offline"
-    "github.com/perriea/tfversion/system/folder"
+    "github.com/perriea/tfversion/terraform/list"
+    "github.com/perriea/tfversion/system/files"
     "github.com/perriea/tfversion/error"
 )
 
@@ -35,8 +34,8 @@ func init()  {
     path_bin = "/terraform/bin/"
     path_tmp = "/terraform/tmp/"
     // Flags CLI
-    flag.BoolVar(&list_online, "list-online", false, "List online version of terraform")
-    flag.BoolVar(&list_offline, "list-offline", false, "List local version of terraform")
+    flag.BoolVar(&list_online, "liston", false, "List online version of terraform")
+    flag.BoolVar(&list_offline, "listoff", false, "List local version of terraform")
     flag.BoolVar(&cleanup, "cleanup", false, "Clean cache (tmp files)")
     flag.StringVar(&install, "install", "0", "Version of terraform to install or switch")
     flag.Parse()
@@ -49,7 +48,7 @@ func main()  {
 
         if err_network {
             // Show version terraform
-            tflist_online.Run()
+            tflist.ListOn()
         } else {
             // No network
             tferror.Run(2, "[ERROR] No internet connection ...")
@@ -57,18 +56,18 @@ func main()  {
 
     } else if list_offline == true {
         // List all versions local
-        tflist_offline.Run()
+        tflist.ListOff()
 
     } else if install != "0" {
 
         if err_network {
             // Lauch Terraform download
-            tffolder.Run(path_tmp, 0755)
+            tffiles.CreateFolder(path_tmp, 0755)
             check = tfdownload.Run(install)
 
             // Check if download is done and install
             if check {
-                tffolder.Run(path_bin, 0755)
+                tffiles.CreateFolder(path_bin, 0755)
                 tfinstall.Run(install)
             }
 
@@ -79,9 +78,10 @@ func main()  {
 
     } else if cleanup {
         // Delete all cache
-        tflist_offline.Cleanup()
+        tflist.Cleanup()
 
     } else {
+        // Show version
         ShowVersion()
     }
 }
