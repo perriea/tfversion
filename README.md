@@ -21,11 +21,10 @@ Functional started from version 0.7.
 ### Install
 
 Pull image `docker pull perriea/tfversion`.   
-Execute command in the terminal : `docker run -it -v ~/.aws:/root/.aws -v ~/.ssh:/root/.ssh perriea/tfversion sh`.
-
+Execute command in the terminal : `docker run -it -v ~/.aws:/root/.aws -v ~/.ssh:/root/.ssh perriea/tfversion sh`.   
 
 ## Roadmap
-  
+
 - List the local versions of terraform and **show curent version**,
 - Install script.
 
@@ -34,11 +33,12 @@ And other things ...
 ## Dependancies
 
 - [kardianos/govendor](https://github.com/kardianos/govendor),
-- [fatih/color](https://github.com/fatih/color).
+- [fatih/color](https://github.com/fatih/color),
+- [google/go-github](https://github.com/google/go-github),
+- [aws/aws-sdk-go](https://github.com/aws/aws-sdk-go) (modules: Session, EC2, AWSErr).
 
 ## License
 
-The MIT License (MIT)
-
+The MIT License (MIT)   
 Copyright (c) 2017 Aurelien Perrier
 
