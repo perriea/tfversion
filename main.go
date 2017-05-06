@@ -4,7 +4,7 @@ import (
 	"flag"
 
 	"github.com/perriea/tfversion/error"
-	"github.com/perriea/tfversion/system/files"
+	"github.com/perriea/tfversion/system/folders"
 	"github.com/perriea/tfversion/system/network"
 	"github.com/perriea/tfversion/terraform/download"
 	"github.com/perriea/tfversion/terraform/install"
@@ -62,12 +62,12 @@ func main() {
 
 		if errNetwork {
 			// Lauch Terraform download
-			tffiles.CreateFolder(pathTmp, 0755)
+			tffolder.CreateFolder(pathTmp, 0755)
 			check = tfdownload.Run(install)
 
 			// Check if download is done and install
 			if check {
-				tffiles.CreateFolder(pathBin, 0755)
+				tffolder.CreateFolder(pathBin, 0755)
 				tfinstall.Run(install)
 			}
 

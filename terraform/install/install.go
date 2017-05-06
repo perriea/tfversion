@@ -9,10 +9,10 @@ import (
 )
 
 var (
-	pathBin  string
+	pathBin string
 	pathZip string
-	usr      *user.User
-	err      error
+	usr     *user.User
+	err     error
 )
 
 func init() {
@@ -26,9 +26,11 @@ func init() {
 func Run(version string) {
 
 	// Unzip zip archive
-	fmt.Printf("Unzip file ...\n")
+	tferror.Run(-1, "Unzip file ...")
 	tffiles.UnZip(fmt.Sprintf(pathZip, version), pathBin)
-	fmt.Printf("Install the binary file ...\n")
+
+	tferror.Run(-1, "Install the binary file ...")
+	tffiles.CreateText(version)
 
 	tferror.Run(1, fmt.Sprintf("Installed %s, Thanks ! ♥\n", version))
 }
