@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 
+	"github.com/perriea/tfversion/cloud/aws"
 	"github.com/perriea/tfversion/error"
 	"github.com/perriea/tfversion/system/folders"
 	"github.com/perriea/tfversion/system/network"
@@ -24,6 +25,7 @@ var (
 	listOnline  bool
 	listOffline bool
 	cleanup     bool
+	awsconfig   bool
 )
 
 func init() {
@@ -38,6 +40,7 @@ func init() {
 	flag.BoolVar(&listOffline, "listoff", false, "List local version of terraform")
 	flag.BoolVar(&cleanup, "cleanup", false, "Clean cache (tmp files)")
 	flag.StringVar(&install, "install", "0", "Version of terraform to install or switch")
+	flag.BoolVar(&awsconfig, "awsconfig", false, "Test AWSConfig")
 	flag.Parse()
 }
 
@@ -80,6 +83,8 @@ func main() {
 		// Delete all cache
 		tflist.Cleanup()
 
+	} else if awsconfig {
+		aws.TestConnect()
 	} else {
 		// Show version
 		ShowVersion()
