@@ -12,11 +12,14 @@ var (
 	err     error
 )
 
-func Run(params []string) error {
-
+func init() {
 	clist = flag.NewFlagSet("list", flag.ExitOnError)
 	clist.BoolVar(&online, "on", false, "View all versions available.")
 	clist.BoolVar(&offline, "off", false, "View all version already downloaded.")
+}
+
+func Run(params []string) error {
+
 	clist.Parse(params)
 
 	if online && offline {
@@ -24,7 +27,7 @@ func Run(params []string) error {
 	}
 
 	if len(params) != 1 {
-		return fmt.Errorf("Too many arguments ...")
+		return fmt.Errorf("One parameter is accepted ...")
 	}
 
 	if online {

@@ -39,7 +39,7 @@ func Run(params []string) error {
 	params = dl.Args()
 
 	if len(params) != 1 {
-		return fmt.Errorf("exactly one parameter needed for move (from path and to path)")
+		return fmt.Errorf("One parameter is accepted ...")
 	}
 
 	// Lauch Terraform download
