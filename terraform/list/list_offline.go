@@ -14,7 +14,6 @@ var (
 	tfversion string
 	count     int
 	usr       *user.User
-	err       error
 )
 
 func init() {
