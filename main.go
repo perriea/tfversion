@@ -58,6 +58,7 @@ func doHelp() error {
 	}
 	sort.Strings(keys)
 
+	fmt.Printf("tfversion v%s\n\n", version)
 	fmt.Printf("Usage: tfversion <command> [args]\n\n")
 	fmt.Printf("Common commands:\n")
 	for _, k := range keys {
