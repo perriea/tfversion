@@ -23,4 +23,4 @@ VOLUME ['/root/.aws', '/root/.ssh']
 
 WORKDIR /root/repo
 
-RUN tfversion --install 0.9.4
+RUN tfversion install 0.9.4

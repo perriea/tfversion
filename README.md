@@ -25,7 +25,6 @@ Execute command in the terminal : `docker run -it -v ~/.aws:/root/.aws -v ~/.ssh
 
 ## Roadmap
 
-- List the local versions of terraform and **show curent version**,
 - Install script.
 
 And other things ...
