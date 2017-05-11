@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"sort"
 
 	"github.com/perriea/tfversion/cloud"
 	"github.com/perriea/tfversion/error"
@@ -22,14 +21,13 @@ type command struct {
 var commands = map[string]command{
 	// list commands
 	"install":   command{"Install new versions or switch.", "[0.8.8 version of terraform]", tfinstall.Run},
-	"list":      command{"List online or offline version of terraform.", "[-on list online], [-off list local]", tflist.Run},
 	"uninstall": command{"Clean cache (tmp files).", "[-a all], [-v version specific]", tfuninstall.Run},
+	"list":      command{"List online or offline version of terraform.", "[-on list online], [-off list local]", tflist.Run},
 	"cloud":     command{"Action cloud (Beta)", "[--aws test AWS]", tfcloud.Run},
 }
 
 var (
 	// Errors
-	check   bool
 	version string
 	err     error
 )
@@ -37,8 +35,6 @@ var (
 func init() {
 	// version app
 	version = "0.0.3"
-	// Simply error
-	check = false
 }
 
 type cmdHandler func([]string) error
@@ -56,15 +52,16 @@ func doHelp() error {
 	for k := range commands {
 		keys = append(keys, k)
 	}
-	sort.Strings(keys)
 
 	fmt.Printf("tfversion v%s\n\n", version)
 	fmt.Printf("Usage: tfversion <command> [args]\n\n")
 	fmt.Printf("Common commands:\n")
+
 	for _, k := range keys {
 		fmt.Printf("%10s: %s\n", k, commands[k].desc)
 		fmt.Printf("            Usage: %s %s\n", k, commands[k].usage)
 	}
+
 	fmt.Printf("      help: Show this help message\n\n")
 
 	// Show if the last version
