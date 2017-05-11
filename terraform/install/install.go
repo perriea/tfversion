@@ -7,8 +7,8 @@ import (
 
 	"github.com/perriea/tfversion/error"
 	"github.com/perriea/tfversion/system/files"
-	"github.com/perriea/tfversion/system/folders"
 	"github.com/perriea/tfversion/terraform/download"
+	"github.com/perriea/tfversion/terraform/init"
 )
 
 var (
@@ -43,12 +43,11 @@ func Run(params []string) error {
 	}
 
 	// Lauch Terraform download
-	tffolder.CreateFolder(pathTmp, 0755)
+	tfinit.CreateTree()
 	check = tfdownload.Run(params[0])
 
 	// Check if download is done and install
 	if check {
-		tffolder.CreateFolder(pathBin, 0755)
 		// Unzip zip archive
 		fmt.Println("Unzip file ...")
 		tffiles.UnZip(fmt.Sprintf(pathZip, params[0]), pathBin)
