@@ -12,6 +12,7 @@ import (
 var (
 	path      string
 	tfversion string
+	tversion  []byte
 	count     int
 	usr       *user.User
 )
@@ -29,29 +30,33 @@ func ListOff() {
 	r, err := regexp.Compile("[0-9]+\\.[0-9]+\\.[0-9]+(-(rc|beta)[0-9]+)?")
 	tferror.Panic(err)
 
-	tversion, err := ioutil.ReadFile(path + "version.txt")
-	tferror.Panic(err)
+	if _, err := os.Stat(path + ".version"); !os.IsNotExist(err) {
 
-	tferror.Run(0, "[INFO] All local version:")
+		tversion, err = ioutil.ReadFile(path + ".version")
+		tferror.Panic(err)
 
-	files, err := ioutil.ReadDir(path)
-	tferror.Panic(err)
+		tferror.Run(0, "[INFO] All local version:")
 
-	for _, f := range files {
+		files, err := ioutil.ReadDir(path)
+		tferror.Panic(err)
 
-		tfversion = r.FindString(f.Name())
-		if tfversion != "" {
-			if tfversion == string(tversion) {
-				tferror.Run(1, tfversion)
-			} else {
-				tferror.Run(-1, tfversion)
+		for _, f := range files {
+			tfversion = r.FindString(f.Name())
+			if tfversion != "" {
+				if tfversion == string(tversion) {
+					tferror.Run(1, tfversion)
+				} else {
+					tferror.Run(-1, tfversion)
+				}
+				count++
 			}
-			count++
 		}
-	}
 
-	if count == 0 {
-		tferror.Run(2, "No local versions !")
+		if count == 0 {
+			tferror.Run(0, "[INFO] No local versions !")
+		}
+	} else {
+		tferror.Run(2, "[WARN] No installed version yet")
 	}
 }
 
