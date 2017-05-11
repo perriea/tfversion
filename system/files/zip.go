@@ -10,28 +10,53 @@ import (
 	"github.com/perriea/tfversion/error"
 )
 
-func DelFiles(target string) {
+var (
+	path     string
+	files    []os.FileInfo
+	tversion []byte
+	reader   *zip.ReadCloser
+)
 
-	files, err := ioutil.ReadDir(target)
+func DelFiles(path string) {
+
+	files, err = ioutil.ReadDir(filepath.Join(path))
+	tferror.Panic(err)
+
+	tversion, err = ioutil.ReadFile(filepath.Join(path))
 	tferror.Panic(err)
 
 	for _, f := range files {
 		if !f.IsDir() {
-			err = os.Remove(target + f.Name())
-			tferror.Panic(err)
+			if !(f.Name() == string(tversion)) {
+				err = os.Remove(filepath.Join(path, f.Name()))
+				tferror.Panic(err)
+			}
+		}
+	}
+}
+
+func DelOneFile(path string, target string) {
+
+	files, err = ioutil.ReadDir(filepath.Join(target))
+	tferror.Panic(err)
+
+	tversion, err = ioutil.ReadFile(filepath.Join(path, target))
+	tferror.Panic(err)
+
+	for _, f := range files {
+		if !f.IsDir() {
+			if f.Name() == string(tversion) || f.Name() == ".version" {
+				err = os.Remove(filepath.Join(target, f.Name()))
+				tferror.Panic(err)
+			}
 		}
 	}
 }
 
 func UnZip(archive, target string) {
 
-	reader, err := zip.OpenReader(archive)
+	reader, err = zip.OpenReader(filepath.Join(archive))
 	tferror.Panic(err)
-
-	err = os.MkdirAll(target, 0755)
-	tferror.Panic(err)
-
-	DelFiles(target)
 
 	for _, file := range reader.File {
 
@@ -45,7 +70,7 @@ func UnZip(archive, target string) {
 		tferror.Panic(err)
 		defer fileReader.Close()
 
-		targetFile, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, file.Mode())
+		targetFile, err := os.OpenFile(filepath.Join(path), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, file.Mode())
 		tferror.Panic(err)
 		defer targetFile.Close()
 

@@ -6,12 +6,12 @@ import (
 	"io/ioutil"
 	"os"
 	"os/user"
+	"path/filepath"
 
 	"github.com/perriea/tfversion/error"
 )
 
 var (
-	path    string
 	count   int
 	all     bool
 	version string
@@ -25,11 +25,10 @@ func init() {
 	tferror.Panic(err)
 
 	count = 0
-	path = usr.HomeDir + "/terraform/tmp/"
 
 	clean = flag.NewFlagSet("uninstall", flag.ExitOnError)
 	clean.BoolVar(&all, "all", false, "Delete all versions locale.")
-	//clean.StringVar(&version, "v", "0", "Delete one version locale.")
+	clean.StringVar(&version, "v", "0", "Delete one version.")
 }
 
 func Run(params []string) error {
@@ -40,16 +39,16 @@ func Run(params []string) error {
 		return fmt.Errorf("Only one argument is accepted.")
 	}
 
-	files, err := ioutil.ReadDir(path)
+	files, err := ioutil.ReadDir(filepath.Join(usr.HomeDir, "/terraform/tmp/"))
 	tferror.Panic(err)
 	for _, f := range files {
-		err = os.Remove(path + f.Name())
+		err = os.Remove(filepath.Join(usr.HomeDir, "/terraform/tmp/", f.Name()))
 		tferror.Panic(err)
 		count++
 	}
 
 	if count == 0 {
-		tferror.Run(2, "Nothing deleted !")
+		tferror.Run(0, "[INFO] Nothing deleted !")
 	} else {
 		tferror.Run(1, "All files are deleted !")
 	}

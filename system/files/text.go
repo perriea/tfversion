@@ -3,6 +3,7 @@ package tffiles
 import (
 	"io/ioutil"
 	"os/user"
+	"path/filepath"
 
 	"github.com/perriea/tfversion/error"
 )
@@ -21,6 +22,6 @@ func CreateText(version string) {
 
 	fileByte := []byte(version)
 
-	err = ioutil.WriteFile(usr.HomeDir+"/terraform/tmp/.version", fileByte, 0600)
+	err = ioutil.WriteFile(filepath.Join(usr.HomeDir, "/terraform/tmp/.version"), fileByte, 0600)
 	tferror.Panic(err)
 }

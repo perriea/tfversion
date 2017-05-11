@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/user"
+	"path/filepath"
 	"regexp"
 
 	"github.com/perriea/tfversion/error"
@@ -30,14 +31,14 @@ func ListOff() {
 	r, err := regexp.Compile("[0-9]+\\.[0-9]+\\.[0-9]+(-(rc|beta)[0-9]+)?")
 	tferror.Panic(err)
 
-	if _, err := os.Stat(path + ".version"); !os.IsNotExist(err) {
+	if _, err := os.Stat(filepath.Join(usr.HomeDir, "/terraform/tmp/.version")); !os.IsNotExist(err) {
 
-		tversion, err = ioutil.ReadFile(path + ".version")
+		tversion, err = ioutil.ReadFile(filepath.Join(usr.HomeDir, "/terraform/tmp/.version"))
 		tferror.Panic(err)
 
 		tferror.Run(0, "[INFO] All local version:")
 
-		files, err := ioutil.ReadDir(path)
+		files, err := ioutil.ReadDir(filepath.Join(usr.HomeDir, "/terraform/tmp/"))
 		tferror.Panic(err)
 
 		for _, f := range files {
@@ -62,17 +63,17 @@ func ListOff() {
 
 func Cleanup() {
 
-	files, err := ioutil.ReadDir(path)
+	files, err := ioutil.ReadDir(filepath.Join(usr.HomeDir, "/terraform/tmp/"))
 	tferror.Panic(err)
 	for _, f := range files {
-		err = os.Remove(path + f.Name())
+		err = os.Remove(filepath.Join(usr.HomeDir, "/terraform/tmp/", f.Name()))
 		tferror.Panic(err)
 
 		count++
 	}
 
 	if count == 0 {
-		tferror.Run(2, "Nothing deleted !")
+		tferror.Run(0, "[INFO] Nothing deleted !")
 	} else {
 		tferror.Run(1, "All files are deleted !")
 	}
