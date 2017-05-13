@@ -17,10 +17,10 @@ RUN apk -Uuv add groff less python py-pip py-virtualenv git openssh make && \
 
 RUN cd $tfversion_path && \
     go build . && \
-    cp $tfversion_path/tfversion $terraform_path
+    cp $tfversion_path/tfversion /go/bin
 
 VOLUME ['/root/.aws', '/root/.ssh']
 
 WORKDIR /root/repo
 
-RUN tfversion --install 0.9.4
+RUN tfversion install 0.9.4

@@ -1,30 +1,30 @@
 package tfnetwork
 
 import (
-    "net"
-    "time"
+	"net"
+	"time"
 )
 
 var (
-    hostname string
-    seconds  int
-    err      error
+	hostname string
+	seconds  int
+	err      error
 )
 
-func init()  {
+func init() {
 
-    hostname = "releases.hashicorp.com:80"
-    seconds  = 5
+	hostname = "releases.hashicorp.com:80"
+	seconds = 3
 }
 
 func Run() bool {
 
-    timeOut := time.Duration(seconds) * time.Second
-    _, err := net.DialTimeout("tcp", hostname, timeOut)
+	timeOut := time.Duration(seconds) * time.Second
+	_, err := net.DialTimeout("tcp", hostname, timeOut)
 
-    if err != nil {
-        return false
-    }
+	if err != nil {
+		return false
+	}
 
-    return true
- }
+	return true
+}
