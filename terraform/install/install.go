@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os/user"
+	"path/filepath"
 
 	"github.com/perriea/tfversion/error"
 	"github.com/perriea/tfversion/system/files"
@@ -25,9 +26,9 @@ func init() {
 	usr, err = user.Current()
 	tferror.Panic(err)
 
-	pathBin = usr.HomeDir + "/terraform/bin/"
-	pathTmp = usr.HomeDir + "/terraform/tmp/"
-	pathZip = pathTmp + "terraform-%s.zip"
+	pathBin = filepath.Join(usr.HomeDir, "/terraform/bin/")
+	pathTmp = filepath.Join(usr.HomeDir, "/terraform/tmp/")
+	pathZip = pathTmp + "/terraform-%s.zip"
 }
 
 func Run(params []string) error {

@@ -2,6 +2,7 @@ package tfinit
 
 import (
 	"os/user"
+	"path/filepath"
 
 	"github.com/perriea/tfversion/error"
 	"github.com/perriea/tfversion/system/folders"
@@ -18,7 +19,7 @@ func init() {
 }
 
 func CreateTree() {
-	tffolder.CreateFolder(usr.HomeDir+"/terraform", 0755)
-	tffolder.CreateFolder(usr.HomeDir+"/terraform/tmp", 0755)
-	tffolder.CreateFolder(usr.HomeDir+"/terraform/bin", 0755)
+	tffolder.CreateFolder(filepath.Join(usr.HomeDir, "/terraform"), 0755)
+	tffolder.CreateFolder(filepath.Join(usr.HomeDir, "/terraform/tmp"), 0755)
+	tffolder.CreateFolder(filepath.Join(usr.HomeDir, "/terraform/bin"), 0755)
 }
