@@ -39,13 +39,6 @@ func init() {
 
 type cmdHandler func([]string) error
 
-func usage(name string) {
-	fmt.Fprintf(os.Stderr, "Usage: %s command command_arguments\n", name)
-	fmt.Fprintf(os.Stderr, "       Use help command to list available commands\n")
-	fmt.Fprintf(os.Stderr, "       Use command -h to get help for commands accepting options\n")
-	os.Exit(1)
-}
-
 func doHelp() error {
 
 	keys := make([]string, 0, len(commands))
@@ -59,7 +52,7 @@ func doHelp() error {
 
 	for _, k := range keys {
 		fmt.Printf("%10s: %s\n", k, commands[k].desc)
-		fmt.Printf("            Usage: %s %s\n", k, commands[k].usage)
+		fmt.Printf("\tUsage: %s %s\n", k, commands[k].usage)
 	}
 
 	fmt.Printf("      help: Show this help message\n\n")
@@ -67,7 +60,7 @@ func doHelp() error {
 	// Show if the last version
 	lastrelease, release := tfgithub.Lastversion(version)
 	if !lastrelease && release != nil {
-		tferror.Run(2, fmt.Sprintf("Your version of tfversion is out of date! The latest version is %s (%s)", *release.TagName, *release.HTMLURL))
+		tferror.Run(2, fmt.Sprintf("Your version of tfversion is out of date !\nThe latest version is %s (%s)", *release.TagName, *release.HTMLURL))
 	}
 
 	return nil
@@ -87,6 +80,8 @@ func main() {
 		}
 	} else {
 		fmt.Fprintf(os.Stderr, "Unknown command '%s'\n", os.Args[1])
-		usage(os.Args[0])
+		fmt.Fprintf(os.Stderr, "Usage: %s command command_arguments\n", os.Args[0])
+		fmt.Fprintf(os.Stderr, "\tUse help command to list available commands\n")
+		fmt.Fprintf(os.Stderr, "\tUse command help to get commands accepting options\n")
 	}
 }
