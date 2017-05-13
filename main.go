@@ -34,7 +34,7 @@ var (
 
 func init() {
 	// version app
-	version = "0.0.3"
+	version = "0.1.0"
 }
 
 type cmdHandler func([]string) error

@@ -28,7 +28,6 @@ func init() {
 
 	clean = flag.NewFlagSet("uninstall", flag.ExitOnError)
 	clean.BoolVar(&all, "all", false, "Delete all versions locale.")
-	//clean.StringVar(&version, "v", "0", "Delete one version.")
 }
 
 func Run(params []string) error {
