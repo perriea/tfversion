@@ -17,8 +17,8 @@ var (
 	pathZip    string
 	pathTmp    string
 	check      bool
-	usr        *user.User
 	errNetwork bool
+	usr        *user.User
 	err        error
 )
 

@@ -19,18 +19,13 @@ var (
 
 func DelFiles(path string) {
 
-	files, err = ioutil.ReadDir(filepath.Join(path))
-	tferror.Panic(err)
-
-	tversion, err = ioutil.ReadFile(filepath.Join(path))
+	files, err = ioutil.ReadDir(filepath.Join(usr.HomeDir, path))
 	tferror.Panic(err)
 
 	for _, f := range files {
 		if !f.IsDir() {
-			if !(f.Name() == string(tversion)) {
-				err = os.Remove(filepath.Join(path, f.Name()))
-				tferror.Panic(err)
-			}
+			err = os.Remove(filepath.Join(usr.HomeDir, path, f.Name()))
+			tferror.Panic(err)
 		}
 	}
 }
@@ -57,6 +52,8 @@ func UnZip(archive, target string) {
 
 	reader, err = zip.OpenReader(filepath.Join(archive))
 	tferror.Panic(err)
+
+	DelFiles("/terraform/bin")
 
 	for _, file := range reader.File {
 
