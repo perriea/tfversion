@@ -3,18 +3,6 @@
 	"ignore": "test",
 	"package": [
 		{
-			"path": "appengine",
-			"revision": ""
-		},
-		{
-			"path": "appengine_internal",
-			"revision": ""
-		},
-		{
-			"path": "appengine_internal/base",
-			"revision": ""
-		},
-		{
 			"checksumSHA1": "ER6Xu2LxkhGM6d58xJPR8Y5YTe4=",
 			"path": "github.com/aws/aws-sdk-go/aws",
 			"revision": "a5b389b7b05c59adf7ac44f50d0d8be6e0c85710",
@@ -171,12 +159,6 @@
 			"revisionTime": "2017-03-28T15:39:02Z"
 		},
 		{
-			"checksumSHA1": "kBeNcaKk56FguvPSUCEaH6AxpRc=",
-			"path": "github.com/golang/protobuf/proto",
-			"revision": "18c9bb3261723cd5401db4d0c9fbc5c3b6c70fe8",
-			"revisionTime": "2017-04-27T21:32:20Z"
-		},
-		{
 			"checksumSHA1": "6ORindkIBjHYt42X73UjBzMgtss=",
 			"path": "github.com/google/go-github/github",
 			"revision": "e8d46665e050742f457a58088b1e6b794b2ae966",
@@ -207,52 +189,16 @@
 			"revisionTime": "2017-03-22T23:44:13Z"
 		},
 		{
-			"checksumSHA1": "Y+HGqEkYM15ir+J93MEaHdyFy0c=",
-			"path": "golang.org/x/net/context",
-			"revision": "feeb485667d1fdabe727840fe00adc22431bc86e",
-			"revisionTime": "2017-05-02T17:39:58Z"
+			"checksumSHA1": "ZOhewV1DsQjTYlx8a+ifrZki2Vg=",
+			"path": "github.com/ryanuber/columnize",
+			"revision": "ddeb643de91b4ee0d9d87172c931a4ea3d81d49a",
+			"revisionTime": "2017-02-08T17:17:27Z"
 		},
 		{
 			"checksumSHA1": "oS0UZOGWVVsVciOQ8nZJ582mFF8=",
 			"path": "golang.org/x/sys/unix",
 			"revision": "9ccfe848b9db8435a24c424abbc07a921adf1df5",
 			"revisionTime": "2017-04-27T03:54:25Z"
-		},
-		{
-			"checksumSHA1": "x6Thdfyasqd68dWZWqzWWeIfAfI=",
-			"path": "google.golang.org/appengine/internal/app_identity",
-			"revision": "170382fa85b10b94728989dfcf6cc818b335c952",
-			"revisionTime": "2017-04-10T19:43:55Z"
-		},
-		{
-			"checksumSHA1": "TsNO8P0xUlLNyh3Ic/tzSp/fDWM=",
-			"path": "google.golang.org/appengine/internal/base",
-			"revision": "170382fa85b10b94728989dfcf6cc818b335c952",
-			"revisionTime": "2017-04-10T19:43:55Z"
-		},
-		{
-			"checksumSHA1": "5QsV5oLGSfKZqTCVXP6NRz5T4Tw=",
-			"path": "google.golang.org/appengine/internal/datastore",
-			"revision": "170382fa85b10b94728989dfcf6cc818b335c952",
-			"revisionTime": "2017-04-10T19:43:55Z"
-		},
-		{
-			"checksumSHA1": "Gep2T9zmVYV8qZfK2gu3zrmG6QE=",
-			"path": "google.golang.org/appengine/internal/log",
-			"revision": "170382fa85b10b94728989dfcf6cc818b335c952",
-			"revisionTime": "2017-04-10T19:43:55Z"
-		},
-		{
-			"checksumSHA1": "eLZVX1EHLclFtQnjDIszsdyWRHo=",
-			"path": "google.golang.org/appengine/internal/modules",
-			"revision": "170382fa85b10b94728989dfcf6cc818b335c952",
-			"revisionTime": "2017-04-10T19:43:55Z"
-		},
-		{
-			"checksumSHA1": "a1XY7rz3BieOVqVI2Et6rKiwQCk=",
-			"path": "google.golang.org/appengine/internal/remote_api",
-			"revision": "170382fa85b10b94728989dfcf6cc818b335c952",
-			"revisionTime": "2017-04-10T19:43:55Z"
 		}
 	],
 	"rootPath": "github.com/perriea/tfversion"
