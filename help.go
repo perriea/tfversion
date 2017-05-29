@@ -8,7 +8,8 @@ import (
 	"github.com/perriea/tfversion/github"
 )
 
-func doHelp() error {
+// DoHelp : Lauch Helper Command
+func DoHelp() error {
 
 	var version string
 
@@ -31,14 +32,14 @@ func doHelp() error {
 	// Show if the last version
 	lastrelease, release := tfgithub.Lastversion(version)
 	if !lastrelease && release != nil {
-		tferror.Run(2, fmt.Sprintf("Your version of tfversion is out of date !\nThe latest version is %s (%s)", *release.TagName, *release.HTMLURL))
+		tferror.Run(2, fmt.Sprintf("Your version is out of date !\nThe latest version is %s (%s)", *release.TagName, *release.HTMLURL))
 	}
 
 	return nil
 }
 
-func doUnkw() {
-
+// CmdUnknown : Unknown commands
+func CmdUnknown() {
 	fmt.Fprintf(os.Stderr, "Unknown command '%s'\n", os.Args[1])
 	fmt.Fprintf(os.Stderr, "Usage: %s command command_arguments\n", os.Args[0])
 	fmt.Fprintf(os.Stderr, "\tUse help command to list available commands\n")
