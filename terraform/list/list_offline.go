@@ -36,25 +36,23 @@ func ListOff() {
 		tversion, err = ioutil.ReadFile(filepath.Join(usr.HomeDir, "/terraform/tmp/.version"))
 		tferror.Panic(err)
 
-		tferror.Run(0, "[INFO] All local version:")
-
 		files, err := ioutil.ReadDir(filepath.Join(usr.HomeDir, "/terraform/tmp/"))
 		tferror.Panic(err)
 
-		for _, f := range files {
+		dirs := make([]string, len(files)) //fi == your []os.FileInfo
+		for i, f := range files {
 			tfversion = r.FindString(f.Name())
 			if tfversion != "" {
-				if tfversion == string(tversion) {
-					tferror.Run(1, tfversion)
-				} else {
-					tferror.Run(-1, tfversion)
-				}
+				dirs[i] = tfversion
 				count++
 			}
 		}
 
 		if count == 0 {
 			tferror.Run(0, "[INFO] No local versions !")
+		} else {
+			tferror.Run(0, "[INFO] All local version:")
+			showList(dirs, string(tversion))
 		}
 	} else {
 		tferror.Run(2, "[WARN] No installed version yet")
@@ -68,7 +66,6 @@ func Cleanup() {
 	for _, f := range files {
 		err = os.Remove(filepath.Join(usr.HomeDir, "/terraform/tmp/", f.Name()))
 		tferror.Panic(err)
-
 		count++
 	}
 
