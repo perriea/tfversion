@@ -1,7 +1,6 @@
 package tfinstall
 
 import (
-	"flag"
 	"fmt"
 	"os/user"
 	"path/filepath"
@@ -9,7 +8,6 @@ import (
 	"github.com/perriea/tfversion/error"
 	"github.com/perriea/tfversion/system/files"
 	"github.com/perriea/tfversion/terraform/download"
-	"github.com/perriea/tfversion/terraform/init"
 )
 
 var (
@@ -31,32 +29,21 @@ func init() {
 	pathZip = pathTmp + "/terraform-%s.zip"
 }
 
-func Run(params []string) error {
-
-	var dl *flag.FlagSet
-
-	dl = flag.NewFlagSet("install", flag.ExitOnError)
-	dl.Parse(params)
-	params = dl.Args()
-
-	if len(params) != 1 {
-		return fmt.Errorf("One parameter is accepted ...")
-	}
+func Run(version string) error {
 
 	// Lauch Terraform download
-	tfinit.CreateTree()
-	check = tfdownload.Run(params[0])
+	check = tfdownload.Run(version)
 
 	// Check if download is done and install
 	if check {
 		// Unzip zip archive
 		fmt.Println("Unzip file ...")
-		tffiles.UnZip(fmt.Sprintf(pathZip, params[0]), pathBin)
+		tffiles.UnZip(fmt.Sprintf(pathZip, version), pathBin)
 
 		fmt.Println("Install the binary file ...")
-		tffiles.CreateText(params[0])
+		tffiles.CreateText(version)
 
-		tferror.Run(1, fmt.Sprintf("Installed %s, Thanks ! ♥", params[0]))
+		tferror.Run(1, fmt.Sprintf("Installed %s, Thanks ! ♥", version))
 	}
 
 	return err

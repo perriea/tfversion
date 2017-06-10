@@ -1,7 +1,6 @@
 package tflist
 
 import (
-	"flag"
 	"fmt"
 
 	"github.com/fatih/color"
@@ -11,16 +10,12 @@ import (
 var (
 	online  bool
 	offline bool
-	clist   *flag.FlagSet
 	good    *color.Color
 	err     error
 )
 
 func init() {
 	good = color.New(color.FgGreen, color.Bold)
-	clist = flag.NewFlagSet("list", flag.ExitOnError)
-	clist.BoolVar(&online, "on", false, "View all versions available.")
-	clist.BoolVar(&offline, "off", false, "View all version already downloaded.")
 }
 
 func showList(list []string, tfversion string) {
@@ -57,25 +52,4 @@ func showList(list []string, tfversion string) {
 
 	result := columnize.SimpleFormat(reslist)
 	fmt.Println(result)
-}
-
-func Run(params []string) error {
-
-	clist.Parse(params)
-
-	if online && offline {
-		return fmt.Errorf("-on and -off are mutually exclusive")
-	}
-
-	if len(params) != 1 {
-		return fmt.Errorf("One parameter is accepted ...")
-	}
-
-	if online {
-		ListOn()
-	} else {
-		ListOff()
-	}
-
-	return nil
 }
