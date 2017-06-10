@@ -67,7 +67,7 @@ func Run(version string) bool {
 				// Verify code equal 200
 				if (err == nil) && (resp.StatusCode == 200) {
 
-					tferror.Run(1, "Start download ...")
+					fmt.Printf("\033[1;32mStart download ...\n")
 					path_tf = fmt.Sprintf(do_path_tf, version)
 					file_unzip, err = os.Create(path_tf)
 					tferror.Panic(err)
@@ -80,21 +80,21 @@ func Run(version string) bool {
 					return true
 
 				} else {
-					tferror.Run(3, "[ERROR] Download impossible, this version doesn't exist !")
+					fmt.Printf("\033[1;31m[ERROR] Download impossible, this version doesn't exist !\n")
 					return false
 				}
 			} else {
-				tferror.Run(3, "[ERROR] No internet connection ...")
+				fmt.Printf("\033[1;31m[ERROR] No internet connection ...\n")
 				return false
 			}
 
 		} else {
-			tferror.Run(3, "[ERROR] The version format is not correct ...")
+			fmt.Printf("\033[1;31m[ERROR] The version format is not correct ...\n")
 			return false
 		}
 
 	} else {
-		tferror.Run(0, "Already in cache ...")
+		fmt.Printf("\033[1;34mAlready in cache ...\n")
 		return true
 	}
 }

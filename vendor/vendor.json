@@ -3,6 +3,12 @@
 	"ignore": "test",
 	"package": [
 		{
+			"checksumSHA1": "4Tc07iR3HloUYC4HNT4xc0875WY=",
+			"path": "github.com/Bowery/prompt",
+			"revision": "0f1139e9a1c74b57ccce6bdb3cd2f7cd04dd3449",
+			"revisionTime": "2017-02-19T07:16:37Z"
+		},
+		{
 			"checksumSHA1": "ER6Xu2LxkhGM6d58xJPR8Y5YTe4=",
 			"path": "github.com/aws/aws-sdk-go/aws",
 			"revision": "a5b389b7b05c59adf7ac44f50d0d8be6e0c85710",
@@ -147,12 +153,6 @@
 			"revisionTime": "2017-05-04T23:50:54Z"
 		},
 		{
-			"checksumSHA1": "16fWSep+3jUx8wADdbiTxSHjW14=",
-			"path": "github.com/fatih/color",
-			"revision": "9131ab34cf20d2f6d83fdc67168a5430d1c7dc23",
-			"revisionTime": "2017-03-07T19:28:53Z"
-		},
-		{
 			"checksumSHA1": "+IH9gXMht4fL/fxKRZ4sqGBps1g=",
 			"path": "github.com/go-ini/ini",
 			"revision": "e7fea39b01aea8d5671f6858f0532f56e8bff3a5",
@@ -177,6 +177,12 @@
 			"revisionTime": "2016-08-03T19:07:31Z"
 		},
 		{
+			"checksumSHA1": "R6DzcBLEP0BONPpsyr+11N7xh5w=",
+			"path": "github.com/labstack/gommon/color",
+			"revision": "1121fd3e243c202482226a7afe4dcd07ffc4139a",
+			"revisionTime": "2017-05-06T16:25:42Z"
+		},
+		{
 			"checksumSHA1": "uAVg4Tj5Fxi62z7/ScDEkHr6Ue8=",
 			"path": "github.com/mattn/go-colorable",
 			"revision": "ded68f7a9561c023e790de24279db7ebf473ea80",
@@ -187,6 +193,24 @@
 			"path": "github.com/mattn/go-isatty",
 			"revision": "fc9e8d8ef48496124e79ae0df75490096eccf6fe",
 			"revisionTime": "2017-03-22T23:44:13Z"
+		},
+		{
+			"checksumSHA1": "Wt3B+VyuxldXaHqtSy50Gwy27g8=",
+			"path": "github.com/mkideal/cli",
+			"revision": "a9c1104566927924fdb041d198f05617492913f9",
+			"revisionTime": "2017-03-24T15:56:50Z"
+		},
+		{
+			"checksumSHA1": "/dGz97uMuuCCAWFgNqI1Wf/pU8g=",
+			"path": "github.com/mkideal/pkg/debug",
+			"revision": "3e188c9e7ecc83d0fe7040a9161ce3c67885470d",
+			"revisionTime": "2017-05-03T15:41:53Z"
+		},
+		{
+			"checksumSHA1": "Fg4yMJny/QorwTrQWkwJXHvW3Pc=",
+			"path": "github.com/mkideal/pkg/expr",
+			"revision": "3e188c9e7ecc83d0fe7040a9161ce3c67885470d",
+			"revisionTime": "2017-05-03T15:41:53Z"
 		},
 		{
 			"checksumSHA1": "ZOhewV1DsQjTYlx8a+ifrZki2Vg=",

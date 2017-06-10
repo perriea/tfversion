@@ -1,4 +1,4 @@
-FROM golang:1.8.1-alpine
+FROM golang:1.8.3-alpine
 
 ENV tfversion_path /go/src/github.com/perriea/tfversion/
 ENV terraform_path /root/terraform/bin
@@ -23,4 +23,4 @@ VOLUME ['/root/.aws', '/root/.ssh']
 
 WORKDIR /root/repo
 
-RUN tfversion install 0.9.4
+RUN tfversion install --version 0.9.6

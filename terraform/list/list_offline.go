@@ -1,6 +1,7 @@
 package tflist
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"os/user"
@@ -49,13 +50,13 @@ func ListOff() {
 		}
 
 		if count == 0 {
-			tferror.Run(0, "[INFO] No local versions !")
+			fmt.Printf("\033[1;34m[INFO] No local versions !\n")
 		} else {
-			tferror.Run(0, "[INFO] All local version:")
+			fmt.Printf("\033[1;34m[INFO] All local version:\n")
 			showList(dirs, string(tversion))
 		}
 	} else {
-		tferror.Run(2, "[WARN] No installed version yet")
+		fmt.Printf("\033[1;33m[WARN] No installed version yet\n")
 	}
 }
 
@@ -70,8 +71,8 @@ func Cleanup() {
 	}
 
 	if count == 0 {
-		tferror.Run(0, "[INFO] Nothing deleted !")
+		fmt.Printf("\033[1;34m[INFO] Nothing deleted !\n")
 	} else {
-		tferror.Run(1, "All files are deleted !")
+		fmt.Printf("\033[1;32mAll files are deleted !\n")
 	}
 }

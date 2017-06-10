@@ -1,7 +1,6 @@
 package tfuninstall
 
 import (
-	"flag"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -16,30 +15,44 @@ var (
 	all     bool
 	version string
 	usr     *user.User
-	clean   *flag.FlagSet
 	err     error
 )
 
 func init() {
 	usr, err = user.Current()
 	tferror.Panic(err)
-
-	count = 0
-
-	clean = flag.NewFlagSet("uninstall", flag.ExitOnError)
-	clean.BoolVar(&all, "all", false, "Delete all versions locale.")
 }
 
-func Run(params []string) error {
+// Uniq : Delete one version
+func Uniq(version string) error {
 
-	clean.Parse(params)
+	count = 0
+	files, err := ioutil.ReadDir(filepath.Join(usr.HomeDir, "/terraform/tmp/"))
 
-	if len(params) != 1 {
-		return fmt.Errorf("Only one argument is accepted.")
+	tferror.Panic(err)
+	for _, f := range files {
+		if f.Name() == fmt.Sprintf("terraform-%s.zip", version) {
+			err = os.Remove(filepath.Join(usr.HomeDir, "/terraform/tmp/", f.Name()))
+			tferror.Panic(err)
+			count++
+		}
 	}
+
+	if count == 0 {
+		fmt.Printf("\033[1;34m[INFO] Nothing deleted !\n")
+	} else {
+		fmt.Printf("\033[1;32mVersion %s is deleted !\n", version)
+	}
+
+	return nil
+}
+
+// All : Delete all cache
+func All() error {
 
 	files, err := ioutil.ReadDir(filepath.Join(usr.HomeDir, "/terraform/tmp/"))
 	tferror.Panic(err)
+
 	for _, f := range files {
 		err = os.Remove(filepath.Join(usr.HomeDir, "/terraform/tmp/", f.Name()))
 		tferror.Panic(err)
@@ -47,9 +60,9 @@ func Run(params []string) error {
 	}
 
 	if count == 0 {
-		tferror.Run(0, "[INFO] Nothing deleted !")
+		fmt.Printf("\033[1;34m[INFO] Nothing deleted !\n")
 	} else {
-		tferror.Run(1, "All files are deleted !")
+		fmt.Printf("\033[1;32mAll files are deleted !\n")
 	}
 
 	return nil

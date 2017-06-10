@@ -3,6 +3,7 @@ package tflist
 import (
 	"bytes"
 	"crypto/tls"
+	"fmt"
 	"net/http"
 	"regexp"
 
@@ -59,7 +60,7 @@ func ListOn() {
 			buf.ReadFrom(resp.Body)
 			newStr := buf.String()
 
-			tferror.Run(0, "[INFO] Versions availables of terraform :")
+			fmt.Printf("\033[1;34m[INFO] Versions availables of terraform :\n")
 			tfversions = r.FindAllString(newStr, -1)
 
 			// Clean doublon
@@ -73,6 +74,6 @@ func ListOn() {
 			showList(cleaned, "0")
 		}
 	} else {
-		tferror.Run(3, "[ERROR] No internet connection ...")
+		fmt.Printf("\033[1;31m[ERROR] No internet connection ...\n")
 	}
 }
