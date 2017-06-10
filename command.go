@@ -10,6 +10,7 @@ import (
 	"github.com/perriea/tfversion/terraform/init"
 	"github.com/perriea/tfversion/terraform/install"
 	"github.com/perriea/tfversion/terraform/list"
+	"github.com/perriea/tfversion/terraform/uninstall"
 )
 
 var help = cli.HelpCommand("Display help informations")
@@ -66,7 +67,8 @@ var install = &cli.Command{
 // child command
 type uninstallT struct {
 	cli.Helper
-	Version string `cli:"*v,version" usage:"uninstall version"`
+	All     bool   `cli:"a,all" usage:"Delete all version (tmp)"`
+	Version string `cli:"!v,version" usage:"Delete version (tmp)"`
 }
 
 var uninstall = &cli.Command{
@@ -79,7 +81,14 @@ var uninstall = &cli.Command{
 	},
 	Fn: func(ctx *cli.Context) error {
 		argv := ctx.Argv().(*uninstallT)
-		ctx.String("Hello, child command, I am %s\n", argv.Version)
+		if argv.All {
+			tfuninstall.All()
+		}
+
+		if argv.Version != "" {
+			tfuninstall.Uniq(argv.Version)
+		}
+
 		return nil
 	},
 }
