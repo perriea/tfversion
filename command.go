@@ -55,7 +55,7 @@ var root = &cli.Command{
 // install command
 type installT struct {
 	cli.Helper
-	Version string `cli:"*version" usage:"install or switch version"`
+	Version string `cli:"*v,version" usage:"install or switch version"`
 }
 
 var install = &cli.Command{
