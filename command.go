@@ -13,12 +13,13 @@ import (
 	"github.com/perriea/tfversion/terraform/uninstall"
 )
 
-var help = cli.HelpCommand("Display help informations")
+var help = cli.HelpCommand("display help informations")
 var tfversion = "0.1.2"
 
 // root command
 type rootT struct {
-	Version bool `cli:"v,version" usage:"Show version and check update"`
+	cli.Helper
+	Version bool `cli:"v,version" usage:"show version and check update"`
 }
 
 var root = &cli.Command{
@@ -30,28 +31,36 @@ var root = &cli.Command{
 	},
 	Fn: func(ctx *cli.Context) error {
 		argv := ctx.Argv().(*rootT)
+
+		// AutoHelper
+		if argv.Help || len(os.Args) == 1 {
+			ctx.WriteUsage()
+			return nil
+		}
+
 		if argv.Version {
-			fmt.Fprintf(os.Stderr, "tfversion v%s\n\n", tfversion)
+			fmt.Printf("tfversion v%s\n\n", tfversion)
 
 			// Show if the last version
 			lastrelease, release := tfgithub.Lastversion(tfversion)
 			if !lastrelease && release != nil {
 				fmt.Printf("Your version is out of date ! The latest version is %s. You can update by downloading from Github (%s).", *release.TagName, *release.HTMLURL)
 			}
+			return nil
 		}
 		return nil
 	},
 }
 
-// child command
+// install command
 type installT struct {
 	cli.Helper
-	Version string `cli:"*version" usage:"Install or switch version"`
+	Version string `cli:"*version" usage:"install or switch version"`
 }
 
 var install = &cli.Command{
 	Name: "install",
-	Desc: "Install new versions or switch.",
+	Desc: "install new versions or switch.",
 	Argv: func() interface{} { return new(installT) },
 	OnBefore: func(ctx *cli.Context) error {
 		tfinit.CreateTree()
@@ -59,21 +68,22 @@ var install = &cli.Command{
 	},
 	Fn: func(ctx *cli.Context) error {
 		argv := ctx.Argv().(*installT)
+
 		tfinstall.Run(argv.Version)
 		return nil
 	},
 }
 
-// child command
+// uninstall command
 type uninstallT struct {
 	cli.Helper
-	All     bool   `cli:"a,all" usage:"Delete all version (tmp)"`
+	All     bool   `cli:"a,all" usage:"delete all version (tmp)"`
 	Version string `cli:"!v,version" usage:"Delete version (tmp)"`
 }
 
 var uninstall = &cli.Command{
 	Name: "uninstall",
-	Desc: "Uninstall local version of Terraform",
+	Desc: "uninstall local version of Terraform",
 	Argv: func() interface{} { return new(uninstallT) },
 	OnBefore: func(ctx *cli.Context) error {
 		tfinit.CreateTree()
@@ -81,6 +91,7 @@ var uninstall = &cli.Command{
 	},
 	Fn: func(ctx *cli.Context) error {
 		argv := ctx.Argv().(*uninstallT)
+
 		if argv.All {
 			tfuninstall.All()
 		}
@@ -93,7 +104,7 @@ var uninstall = &cli.Command{
 	},
 }
 
-// child command
+// list command
 type listT struct {
 	cli.Helper
 	On  bool `cli:"!on,online" usage:"list online version"`
@@ -102,7 +113,7 @@ type listT struct {
 
 var list = &cli.Command{
 	Name: "list",
-	Desc: "List online or offline version of terraform",
+	Desc: "list online or offline version of terraform",
 	Argv: func() interface{} { return new(listT) },
 	OnBefore: func(ctx *cli.Context) error {
 		tfinit.CreateTree()
@@ -110,6 +121,7 @@ var list = &cli.Command{
 	},
 	Fn: func(ctx *cli.Context) error {
 		argv := ctx.Argv().(*listT)
+
 		if argv.On {
 			tflist.ListOn()
 		} else {
@@ -119,7 +131,7 @@ var list = &cli.Command{
 	},
 }
 
-// child command
+// test command
 type testT struct {
 	cli.Helper
 	Aws bool `cli:"*aws,amazon" usage:"test connection to AWS"`
@@ -128,10 +140,11 @@ type testT struct {
 
 var test = &cli.Command{
 	Name: "test",
-	Desc: "Test provider cloud (AWS)",
+	Desc: "test provider cloud (AWS)",
 	Argv: func() interface{} { return new(testT) },
 	Fn: func(ctx *cli.Context) error {
 		argv := ctx.Argv().(*testT)
+
 		if argv.Aws {
 			tfaws.TestConnect()
 		}
