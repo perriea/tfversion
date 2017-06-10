@@ -47,9 +47,9 @@ func Run(params []string) error {
 	}
 
 	if count == 0 {
-		tferror.Run(0, "[INFO] Nothing deleted !")
+		fmt.Printf("\033[1;34m[INFO] Nothing deleted !\n")
 	} else {
-		tferror.Run(1, "All files are deleted !")
+		fmt.Printf("\033[1;32mAll files are deleted !\n")
 	}
 
 	return nil

@@ -3,20 +3,14 @@ package tflist
 import (
 	"fmt"
 
-	"github.com/fatih/color"
 	"github.com/ryanuber/columnize"
 )
 
 var (
 	online  bool
 	offline bool
-	good    *color.Color
 	err     error
 )
-
-func init() {
-	good = color.New(color.FgGreen, color.Bold)
-}
 
 func showList(list []string, tfversion string) {
 
@@ -35,9 +29,9 @@ func showList(list []string, tfversion string) {
 		for k <= max {
 			if (k != max) && (len(list)-i) > 0 {
 				if list[i] == tfversion {
-					newlist = newlist + good.Sprintf(list[i]) + " | "
+					newlist = "\033[0;37m" + newlist + fmt.Sprintf("\033[1;32m"+list[i]+"\033[0;37m") + " | "
 				} else {
-					newlist = newlist + list[i] + " | "
+					newlist = "\033[0;37m" + newlist + list[i] + " | "
 				}
 			} else {
 				if (len(list) - i) >= 0 {

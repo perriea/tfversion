@@ -30,7 +30,7 @@ func TestConnect() {
 	_, err := ec2svc.DescribeInstances(params)
 
 	if err != nil {
-		tferror.Run(2, "[WARN] Your AWS access is not correct")
+		fmt.Println("\033[1;33m[WARN] Your AWS access is not correct")
 		if awsErr, ok := err.(awserr.Error); ok {
 
 			if reqErr, ok := err.(awserr.RequestFailure); ok {
@@ -46,6 +46,6 @@ func TestConnect() {
 		}
 
 	} else {
-		tferror.Run(1, "Your AWS access is correct")
+		fmt.Println("\033[1;32mYour AWS access is correct")
 	}
 }

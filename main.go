@@ -4,18 +4,12 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/fatih/color"
 	"github.com/mkideal/cli"
 )
 
 var (
-	bold *color.Color
-	err  error
+	err error
 )
-
-func init() {
-	bold = color.New(color.FgWhite, color.Bold)
-}
 
 func main() {
 

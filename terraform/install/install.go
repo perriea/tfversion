@@ -37,13 +37,13 @@ func Run(version string) error {
 	// Check if download is done and install
 	if check {
 		// Unzip zip archive
-		fmt.Println("Unzip file ...")
+		fmt.Printf("\033[0;37mUnzip file ...\n")
 		tffiles.UnZip(fmt.Sprintf(pathZip, version), pathBin)
 
-		fmt.Println("Install the binary file ...")
+		fmt.Println("\033[0;37mInstall the binary file ...")
 		tffiles.CreateText(version)
 
-		tferror.Run(1, fmt.Sprintf("Installed %s, Thanks ! ♥", version))
+		fmt.Printf("\033[1;32mInstalled %s, Thanks ! ♥\n", version)
 	}
 
 	return err
