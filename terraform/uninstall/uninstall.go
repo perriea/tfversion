@@ -23,6 +23,7 @@ func init() {
 	tferror.Panic(err)
 }
 
+// Uniq : Delete one version
 func Uniq(version string) error {
 
 	count = 0
@@ -40,16 +41,18 @@ func Uniq(version string) error {
 	if count == 0 {
 		fmt.Printf("\033[1;34m[INFO] Nothing deleted !\n")
 	} else {
-		fmt.Printf("\033[1;32mVersion is deleted !\n")
+		fmt.Printf("\033[1;32mVersion %s is deleted !\n", version)
 	}
 
 	return nil
 }
 
+// All : Delete all cache
 func All() error {
 
 	files, err := ioutil.ReadDir(filepath.Join(usr.HomeDir, "/terraform/tmp/"))
 	tferror.Panic(err)
+
 	for _, f := range files {
 		err = os.Remove(filepath.Join(usr.HomeDir, "/terraform/tmp/", f.Name()))
 		tferror.Panic(err)

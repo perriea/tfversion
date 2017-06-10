@@ -1,10 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/mkideal/cli"
-	"github.com/perriea/tfversion/error"
 )
 
 var (
@@ -21,5 +21,8 @@ func main() {
 		cli.Tree(test),
 	).Run(os.Args[1:])
 
-	tferror.Panic(err)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
 }
