@@ -3,49 +3,46 @@ package tfaws
 import (
 	"fmt"
 
-	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/ec2"
-	"github.com/perriea/tfversion/error"
+	"github.com/aws/aws-sdk-go/service/s3"
 )
 
 var (
-	sess   *session.Session
-	ec2svc *ec2.EC2
-	err    error
+	sess       *session.Session
+	s3svc      *s3.S3
+	bucketName string
+	err        error
 )
 
-func TestConnect() {
-
+func init() {
 	// The SDK has support for the shared configuration file (~/.aws/config)
 	// Create a session to share configuration, and load external configuration.
-	sess = session.Must(session.NewSessionWithOptions(session.Options{
-		SharedConfigState: session.SharedConfigEnable,
-	}))
+	sess = session.Must(session.NewSessionWithOptions(session.Options{SharedConfigState: session.SharedConfigEnable}))
+	bucketName = "tfversion"
+}
 
-	params := &ec2.DescribeInstancesInput{}
+// Run : Lauch test AWS
+func Run() {
 
-	// Create the service's client with the session.
-	ec2svc = ec2.New(sess)
-	_, err := ec2svc.DescribeInstances(params)
+	fmt.Print("\033[1;37mAWS Connection (S3) :\n")
 
+	// sess with s3
+	s3svc = s3.New(sess)
+
+	// creation bucket
+	_, err := s3svc.CreateBucket(&s3.CreateBucketInput{Bucket: &bucketName})
 	if err != nil {
-		fmt.Println("\033[1;33m[WARN] Your AWS access is not correct")
-		if awsErr, ok := err.(awserr.Error); ok {
-
-			if reqErr, ok := err.(awserr.RequestFailure); ok {
-				// A service error occurred
-				fmt.Printf("%s : %s (%s)", awsErr.Code(), awsErr.Message(), reqErr.RequestID())
-			} else {
-				// Generic AWS Error with Code, Message, and original error (if any)
-				fmt.Printf("%s : %s\n%s", awsErr.Code(), awsErr.Message(), awsErr.OrigErr())
-			}
-
-		} else {
-			tferror.Panic(err)
-		}
-
+		fmt.Printf("\033[0;31m- Failed to create client\n")
+		fmt.Printf("\033[0;31m- Failed to create bucket: %v", err)
 	} else {
-		fmt.Println("\033[1;32mYour AWS access is correct")
+		fmt.Print("\033[0;32m- Successful connection\n")
+		fmt.Printf("\033[0;32m- Bucket %v created.\n", bucketName)
+
+		// delete bucket
+		if _, err := s3svc.DeleteBucket(&s3.DeleteBucketInput{Bucket: &bucketName}); err != nil {
+			fmt.Printf("\033[0;31m- Failed to delete bucket: %v", err)
+		} else {
+			fmt.Printf("\033[0;32m- Bucket %v deleted.\n", bucketName)
+		}
 	}
 }
