@@ -62,7 +62,7 @@ type installT struct {
 
 var install = &cli.Command{
 	Name: "install",
-	Desc: "install new versions or switch.",
+	Desc: "install new versions or switch",
 	Argv: func() interface{} { return new(installT) },
 	OnBefore: func(ctx *cli.Context) error {
 		tfinit.CreateTree()
