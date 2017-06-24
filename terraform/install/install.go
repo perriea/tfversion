@@ -11,24 +11,30 @@ import (
 )
 
 var (
-	pathBin    string
-	pathZip    string
-	pathTmp    string
+	// different path
+	pathBin string
+	pathZip string
+	pathTmp string
+
+	// check error
 	check      bool
 	errNetwork bool
-	usr        *user.User
-	err        error
+
+	// user parameters
+	usr *user.User
+	err error
 )
 
 func init() {
 	usr, err = user.Current()
 	tferror.Panic(err)
 
-	pathBin = filepath.Join(usr.HomeDir, "/terraform/bin/")
-	pathTmp = filepath.Join(usr.HomeDir, "/terraform/tmp/")
-	pathZip = pathTmp + "/terraform-%s.zip"
+	pathBin = filepath.Join(usr.HomeDir, "/.tfversion/bin/")
+	pathTmp = filepath.Join(usr.HomeDir, "/.tfversion/tmp/")
+	pathZip = filepath.Join(pathTmp + "/terraform-%s.zip")
 }
 
+// Run : Install terraform
 func Run(version string) error {
 
 	// Lauch Terraform download
@@ -38,10 +44,12 @@ func Run(version string) error {
 	if check {
 		// Unzip zip archive
 		fmt.Printf("\033[0;37mUnzip file ...\n")
-		tffiles.UnZip(fmt.Sprintf(pathZip, version), pathBin)
+		err = tffiles.UnZipFile(fmt.Sprintf(pathZip, version), pathBin)
+		tferror.Panic(err)
 
 		fmt.Println("\033[0;37mInstall the binary file ...")
-		tffiles.CreateText(version)
+		err = tffiles.CreateVersioning(version)
+		tferror.Panic(err)
 
 		fmt.Printf("\033[1;32mInstalled %s, Thanks ! ♥\n", version)
 	}

@@ -20,7 +20,10 @@ func init() {
 
 // CreateTree : Create folders (init)
 func CreateTree() {
-	tffolder.CreateFolder(filepath.Join(usr.HomeDir, "/terraform"), 0755)
-	tffolder.CreateFolder(filepath.Join(usr.HomeDir, "/terraform/tmp"), 0755)
-	tffolder.CreateFolder(filepath.Join(usr.HomeDir, "/terraform/bin"), 0755)
+	var tfpaths = []string{"/.tfversion", "/.tfversion/tmp", "/.tfversion/bin"}
+
+	for _, tfpath := range tfpaths {
+		err = tffolder.MakeFolder(filepath.Join(usr.HomeDir, tfpath), 0755)
+		tferror.Panic(err)
+	}
 }

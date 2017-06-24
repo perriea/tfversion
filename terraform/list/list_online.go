@@ -42,7 +42,7 @@ func stringInSlice(str string, list []string) bool {
 }
 
 func ListOn() {
-	errNetwork = tfnetwork.Run()
+	errNetwork = tfnetwork.Run("releases.hashicorp.com:80", 3, false)
 
 	if errNetwork {
 		resp, err := client.Get(url_tf)

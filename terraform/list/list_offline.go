@@ -24,20 +24,21 @@ func init() {
 	tferror.Panic(err)
 
 	count = 0
-	path = usr.HomeDir + "/terraform/tmp/"
+	path = usr.HomeDir + "/.tfversion/tmp/"
 }
 
+// ListOff : List version cache
 func ListOff() {
 
 	r, err := regexp.Compile("[0-9]+\\.[0-9]+\\.[0-9]+(-(rc|beta)[0-9]+)?")
 	tferror.Panic(err)
 
-	if _, err := os.Stat(filepath.Join(usr.HomeDir, "/terraform/tmp/.version")); !os.IsNotExist(err) {
+	if _, err := os.Stat(filepath.Join(path, ".version")); !os.IsNotExist(err) {
 
-		tversion, err = ioutil.ReadFile(filepath.Join(usr.HomeDir, "/terraform/tmp/.version"))
+		tversion, err = ioutil.ReadFile(filepath.Join(path, ".version"))
 		tferror.Panic(err)
 
-		files, err := ioutil.ReadDir(filepath.Join(usr.HomeDir, "/terraform/tmp/"))
+		files, err := ioutil.ReadDir(filepath.Join(path))
 		tferror.Panic(err)
 
 		dirs := make([]string, len(files)) //fi == your []os.FileInfo
@@ -50,22 +51,23 @@ func ListOff() {
 		}
 
 		if count == 0 {
-			fmt.Printf("\033[1;34m[INFO] No local versions !\n")
+			fmt.Printf("\033[1;34mNo local versions !\n")
 		} else {
-			fmt.Printf("\033[1;34m[INFO] All local version:\n")
+			fmt.Printf("All local version:\n")
 			showList(dirs, string(tversion))
 		}
 	} else {
-		fmt.Printf("\033[1;33m[WARN] No installed version yet\n")
+		fmt.Printf("\033[1;33mNo installed version yet\n")
 	}
 }
 
+// Cleanup : Delete files
 func Cleanup() {
 
-	files, err := ioutil.ReadDir(filepath.Join(usr.HomeDir, "/terraform/tmp/"))
+	files, err := ioutil.ReadDir(filepath.Join(path))
 	tferror.Panic(err)
 	for _, f := range files {
-		err = os.Remove(filepath.Join(usr.HomeDir, "/terraform/tmp/", f.Name()))
+		err = os.Remove(filepath.Join(path, f.Name()))
 		tferror.Panic(err)
 		count++
 	}

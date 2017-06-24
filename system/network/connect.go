@@ -1,26 +1,32 @@
 package tfnetwork
 
 import (
+	"fmt"
 	"net"
 	"time"
 )
 
 var (
-	hostname string
-	seconds  int
-	err      error
+	resp net.Conn
+	err  error
 )
 
-func init() {
+// Run : Lauch test internet connection
+func Run(hostname string, timeout int, verbose bool) bool {
 
-	hostname = "releases.hashicorp.com:80"
-	seconds = 3
-}
+	if hostname == "" {
+		hostname = "releases.hashicorp.com:80"
+	}
+	if timeout == 0 {
+		timeout = 3
+	}
 
-func Run() bool {
+	calcTimeOut := time.Duration(timeout) * time.Second
+	resp, err = net.DialTimeout("tcp", hostname, calcTimeOut)
 
-	timeOut := time.Duration(seconds) * time.Second
-	_, err := net.DialTimeout("tcp", hostname, timeOut)
+	if verbose {
+		fmt.Printf("Request %s\nRemoteAddr: %s\nLocalAddr: %s\n\n", hostname, resp.RemoteAddr(), resp.LocalAddr())
+	}
 
 	if err != nil {
 		return false

@@ -14,7 +14,6 @@ var (
 func main() {
 
 	err = cli.Root(root,
-		cli.Tree(help),
 		cli.Tree(install),
 		cli.Tree(uninstall),
 		cli.Tree(list),

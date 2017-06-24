@@ -1,19 +1,18 @@
 # tfversion
 
-`tfversion` is a command created to switch between different versions of [terraform](https://www.terraform.io).   
-Functional for all versions.
+`tfversion` is a command created to switch between different versions of [terraform](https://www.terraform.io).
 
 ## Build Project
 
 - [Install Golang](https://golang.org/doc/install) (add var ENV),
-- Build `go build` or `go get github.com/perriea/tfversion`,
-- Add in your `.bashrc` (Linux) or `.bash_profile` : `export PATH=$PATH:~/terraform/bin`
+- Build with commands `go build`, `make build` or `go get github.com/perriea/tfversion`,
+- Add in your `.bashrc` (Linux), `.bash_profile` (Darwin, MacOS) or `.zshrc` : `export PATH=$PATH:~/.tfversion/bin` and `GOOGLE_APPLICATION_CREDENTIALS` (contain path of Google JSON credential, **optional**).
 
 ## Commands
 
 ``` shell
-➜  ~ tfversion help
-tfversion v0.1.2
+➜  ~ ✗ tfversion
+tfversion v0.1.3
 
 Usage:
 
@@ -21,15 +20,15 @@ Usage:
 
 Options:
 
-  -v, --version   Show version and check update
+  -h, --help      display help information
+  -v, --version   show version and check update
 
 Commands:
 
-  help        Display help informations
-  install     Install new versions or switch.
-  uninstall   Uninstall local version of Terraform
-  list        List online or offline version of terraform
-  test        Test provider cloud (AWS)
+  install     install new versions or switch.
+  uninstall   uninstall local version of Terraform
+  list        list online or offline version of terraform
+  test        test provider cloud (AWS, GCP)
 ```
 
 ## Docker
@@ -37,7 +36,8 @@ Commands:
 ### Require
 
 - Docker,
-- AWS credidencial (`~/.aws`),
+- AWS access keys (`~/.aws`),
+- GCP access keys (`~/.gcloud` or an other path) and SDK,
 - SSH folder (`~/.ssh`).
 
 ### Install
@@ -48,8 +48,10 @@ Execute command in the terminal : `docker run -it -v ~/.aws:/root/.aws -v ~/.ssh
 ## Dependancies
 
 - [kardianos/govendor](https://github.com/kardianos/govendor),
+- [mkideal/cli](https://github.com/mkideal/cli)
 - [google/go-github](https://github.com/google/go-github),
 - [aws/aws-sdk-go](https://github.com/aws/aws-sdk-go) (modules: Session, EC2, AWSErr).
+- [GoogleCloudPlatform/google-cloud-go](https://github.com/GoogleCloudPlatform/google-cloud-go)
 
 ## License
 

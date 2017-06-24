@@ -3,10 +3,14 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/user"
+	"path/filepath"
 
 	"github.com/mkideal/cli"
+	"github.com/perriea/tfversion/error"
 	"github.com/perriea/tfversion/github"
 	"github.com/perriea/tfversion/terraform/cloud/aws"
+	"github.com/perriea/tfversion/terraform/cloud/gcp"
 	"github.com/perriea/tfversion/terraform/init"
 	"github.com/perriea/tfversion/terraform/install"
 	"github.com/perriea/tfversion/terraform/list"
@@ -14,7 +18,8 @@ import (
 )
 
 var help = cli.HelpCommand("display help informations")
-var tfversion = "0.1.2"
+
+const tfversion = "0.1.3"
 
 // root command
 type rootT struct {
@@ -42,8 +47,8 @@ var root = &cli.Command{
 			fmt.Printf("tfversion v%s\n\n", tfversion)
 
 			// Show if the last version
-			lastrelease, release := tfgithub.Lastversion(tfversion)
-			if !lastrelease && release != nil {
+			test, release := tfgithub.LastVersion(tfversion)
+			if !test && release != nil {
 				fmt.Printf("Your version is out of date ! The latest version is %s. You can update by downloading from Github (%s).", *release.TagName, *release.HTMLURL)
 			}
 			return nil
@@ -55,12 +60,12 @@ var root = &cli.Command{
 // install command
 type installT struct {
 	cli.Helper
-	Version string `cli:"*v,version" usage:"install or switch version"`
+	Version string `cli:"v,version" usage:"install or switch version"`
 }
 
 var install = &cli.Command{
 	Name: "install",
-	Desc: "install new versions or switch.",
+	Desc: "install new versions or switch",
 	Argv: func() interface{} { return new(installT) },
 	OnBefore: func(ctx *cli.Context) error {
 		tfinit.CreateTree()
@@ -69,7 +74,11 @@ var install = &cli.Command{
 	Fn: func(ctx *cli.Context) error {
 		argv := ctx.Argv().(*installT)
 
-		tfinstall.Run(argv.Version)
+		if argv.Version != "" {
+			tfinstall.Run(argv.Version)
+		} else {
+			ctx.WriteUsage()
+		}
 		return nil
 	},
 }
@@ -78,7 +87,7 @@ var install = &cli.Command{
 type uninstallT struct {
 	cli.Helper
 	All     bool   `cli:"a,all" usage:"delete all version (tmp)"`
-	Version string `cli:"!v,version" usage:"Delete version (tmp)"`
+	Version string `cli:"v,version" usage:"Delete version (tmp)"`
 }
 
 var uninstall = &cli.Command{
@@ -93,13 +102,18 @@ var uninstall = &cli.Command{
 		argv := ctx.Argv().(*uninstallT)
 
 		if argv.All {
-			tfuninstall.All()
-		}
+			usr, err := user.Current()
+			tferror.Panic(err)
 
-		if argv.Version != "" {
-			tfuninstall.Uniq(argv.Version)
+			err = tfuninstall.All(filepath.Join(usr.HomeDir, "/.tfversion/bin/"))
+			tferror.Panic(err)
+			fmt.Printf("All files are deleted !\n")
+		} else if argv.Version != "" {
+			err = tfuninstall.OneVersion(argv.Version)
+			tferror.Panic(err)
+		} else {
+			ctx.WriteUsage()
 		}
-
 		return nil
 	},
 }
@@ -107,7 +121,7 @@ var uninstall = &cli.Command{
 // list command
 type listT struct {
 	cli.Helper
-	On  bool `cli:"!on,online" usage:"list online version"`
+	On  bool `cli:"on,online" usage:"list online version"`
 	Off bool `cli:"off,offline" usage:"list offline version"`
 }
 
@@ -124,8 +138,10 @@ var list = &cli.Command{
 
 		if argv.On {
 			tflist.ListOn()
-		} else {
+		} else if argv.Off {
 			tflist.ListOff()
+		} else {
+			ctx.WriteUsage()
 		}
 		return nil
 	},
@@ -134,19 +150,23 @@ var list = &cli.Command{
 // test command
 type testT struct {
 	cli.Helper
-	Aws bool `cli:"*aws,amazon" usage:"test connection to AWS"`
-	//Gcp bool `cli:"*gcp,google" usage:"test connection to GCP"`
+	Aws bool   `cli:"a,aws" usage:"test connection to AWS"`
+	Gcp string `cli:"g,gcp" usage:"test connection to GCP (write your project name)"`
 }
 
 var test = &cli.Command{
 	Name: "test",
-	Desc: "test provider cloud (AWS)",
+	Desc: "test provider cloud (AWS, GCP)",
 	Argv: func() interface{} { return new(testT) },
 	Fn: func(ctx *cli.Context) error {
 		argv := ctx.Argv().(*testT)
 
 		if argv.Aws {
-			tfaws.TestConnect()
+			tfaws.Run()
+		} else if argv.Gcp != "" {
+			tfgcp.Run(argv.Gcp)
+		} else {
+			ctx.WriteUsage()
 		}
 		return nil
 	},
