@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/google/go-github/github"
-	"github.com/perriea/tfversion/error"
 	"github.com/perriea/tfversion/system/network"
 )
 
@@ -22,20 +21,19 @@ func init() {
 	errNetwork = false
 }
 
-func ListReleases() []*github.RepositoryRelease {
-
-	releases, _, err := client.Repositories.ListReleases(ctx, "perriea", "tfversion", nil)
-	tferror.Panic(err)
-
-	return releases
+// ListReleases : get all version published
+func ListReleases(username string, repository string) ([]*github.RepositoryRelease, error) {
+	releases, _, err := client.Repositories.ListReleases(ctx, username, repository, nil)
+	return releases, err
 }
 
-func Lastversion(version string) (bool, *github.RepositoryRelease) {
+// LastVersion : Check last version of package
+func LastVersion(version string) (bool, *github.RepositoryRelease) {
 
 	// check if the internet connection is active
-	errNetwork = tfnetwork.Run()
+	errNetwork = tfnetwork.Run("github.com:80", 3, false)
 	if errNetwork {
-		releases = ListReleases()
+		releases, _ = ListReleases("perriea", "tfversion")
 
 		if *releases[0].TagName == version {
 			return true, releases[0]

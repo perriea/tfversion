@@ -44,8 +44,8 @@ var root = &cli.Command{
 			fmt.Printf("tfversion v%s\n\n", tfversion)
 
 			// Show if the last version
-			lastrelease, release := tfgithub.Lastversion(tfversion)
-			if !lastrelease && release != nil {
+			test, release := tfgithub.LastVersion(tfversion)
+			if !test && release != nil {
 				fmt.Printf("Your version is out of date ! The latest version is %s. You can update by downloading from Github (%s).", *release.TagName, *release.HTMLURL)
 			}
 			return nil
