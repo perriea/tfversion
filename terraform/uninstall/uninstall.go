@@ -11,32 +11,55 @@ import (
 )
 
 var (
-	count   int
-	all     bool
-	version string
-	tfpath  string
-	usr     *user.User
-	err     error
+	count     int
+	all       bool
+	version   string
+	tfPathTmp string
+	tfPathBin string
+	usr       *user.User
+	err       error
 )
 
 func init() {
 	usr, err = user.Current()
 	tferror.Panic(err)
 
-	tfpath = filepath.Join(usr.HomeDir, "/.tfversion/tmp/")
+	tfPathTmp = filepath.Join(usr.HomeDir, "/.tfversion/tmp/")
+	tfPathBin = filepath.Join(usr.HomeDir, "/.tfversion/bin/")
 }
 
-// Uniq : Delete one version
-func Uniq(version string) error {
+// OneBinary : delete binary
+func OneBinary() error {
+	files, err := ioutil.ReadDir(tfPathBin)
+	if err != nil {
+		return err
+	}
 
+	for _, f := range files {
+		err = os.Remove(filepath.Join(tfPathBin, f.Name()))
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+// OneVersion : Delete one version
+func OneVersion(version string) error {
 	count = 0
-	files, err := ioutil.ReadDir(tfpath)
 
-	tferror.Panic(err)
+	files, err := ioutil.ReadDir(tfPathTmp)
+	if err != nil {
+		return err
+	}
+
 	for _, f := range files {
 		if f.Name() == fmt.Sprintf("terraform-%s.zip", version) {
-			err = os.Remove(filepath.Join(tfpath, f.Name()))
-			tferror.Panic(err)
+			err = os.Remove(filepath.Join(tfPathTmp, f.Name()))
+			if err != nil {
+				return err
+			}
 			count++
 		}
 	}
@@ -50,22 +73,26 @@ func Uniq(version string) error {
 	return nil
 }
 
-// All : Delete all cache
-func All() error {
+// AllVersion : Delete all cache
+func AllVersion() error {
 
-	files, err := ioutil.ReadDir(tfpath)
-	tferror.Panic(err)
+	files, err := ioutil.ReadDir(tfPathTmp)
+	if err != nil {
+		return err
+	}
 
 	for _, f := range files {
-		err = os.Remove(filepath.Join(tfpath, f.Name()))
-		tferror.Panic(err)
+		err = os.Remove(filepath.Join(tfPathTmp, f.Name()))
+		if err != nil {
+			return err
+		}
 		count++
 	}
 
 	if count == 0 {
-		fmt.Printf("\033[1;34m[INFO] Nothing deleted !\n")
+		fmt.Printf("Nothing deleted !\n")
 	} else {
-		fmt.Printf("\033[1;32mAll files are deleted !\n")
+		fmt.Printf("All files are deleted !\n")
 	}
 
 	return nil

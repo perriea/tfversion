@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/mkideal/cli"
+	"github.com/perriea/tfversion/error"
 	"github.com/perriea/tfversion/github"
 	"github.com/perriea/tfversion/terraform/cloud/aws"
 	"github.com/perriea/tfversion/terraform/cloud/gcp"
@@ -99,9 +100,11 @@ var uninstall = &cli.Command{
 		argv := ctx.Argv().(*uninstallT)
 
 		if argv.All {
-			tfuninstall.All()
+			err = tfuninstall.AllVersion()
+			tferror.Panic(err)
 		} else if argv.Version != "" {
-			tfuninstall.Uniq(argv.Version)
+			err = tfuninstall.OneVersion(argv.Version)
+			tferror.Panic(err)
 		} else {
 			ctx.WriteUsage()
 		}
