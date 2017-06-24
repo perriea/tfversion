@@ -28,23 +28,6 @@ func init() {
 	tfPathBin = filepath.Join(usr.HomeDir, "/.tfversion/bin/")
 }
 
-// OneBinary : delete binary
-func OneBinary() error {
-	files, err := ioutil.ReadDir(tfPathBin)
-	if err != nil {
-		return err
-	}
-
-	for _, f := range files {
-		err = os.Remove(filepath.Join(tfPathBin, f.Name()))
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
 // OneVersion : Delete one version
 func OneVersion(version string) error {
 	count = 0
@@ -73,26 +56,19 @@ func OneVersion(version string) error {
 	return nil
 }
 
-// AllVersion : Delete all cache
-func AllVersion() error {
+// All : Delete all files in folder
+func All(path string) error {
 
-	files, err := ioutil.ReadDir(tfPathTmp)
+	files, err := ioutil.ReadDir(path)
 	if err != nil {
 		return err
 	}
 
 	for _, f := range files {
-		err = os.Remove(filepath.Join(tfPathTmp, f.Name()))
+		err = os.Remove(filepath.Join(path, f.Name()))
 		if err != nil {
 			return err
 		}
-		count++
-	}
-
-	if count == 0 {
-		fmt.Printf("Nothing deleted !\n")
-	} else {
-		fmt.Printf("All files are deleted !\n")
 	}
 
 	return nil

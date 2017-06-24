@@ -2,18 +2,11 @@ package tfuninstall
 
 import (
 	"fmt"
+	"path/filepath"
 	"testing"
 )
 
-// TestOneBinary : Delete binary
-func TestOneBinary(t *testing.T) {
-	err = OneBinary()
-	if err != nil {
-		t.Fatalf("Error suppression files !")
-	}
-}
-
-// TestOneBinary : Delete binary
+// TestOneVersion : Delete binary
 func TestOneVersion(t *testing.T) {
 	err = OneVersion("0.9.6")
 	if err != nil {
@@ -21,9 +14,9 @@ func TestOneVersion(t *testing.T) {
 	}
 }
 
-// TestAllVersion : Delete all cache
-func TestAllVersion(t *testing.T) {
-	err = AllVersion()
+// TestAll : Delete all cache
+func TestAll(t *testing.T) {
+	err = All(filepath.Join(usr.HomeDir, "/.tfversion/tmp/"))
 	if err != nil {
 		t.Fatalf("Error suppression files !")
 	} else {

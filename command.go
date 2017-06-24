@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/user"
+	"path/filepath"
 
 	"github.com/mkideal/cli"
 	"github.com/perriea/tfversion/error"
@@ -100,8 +102,12 @@ var uninstall = &cli.Command{
 		argv := ctx.Argv().(*uninstallT)
 
 		if argv.All {
-			err = tfuninstall.AllVersion()
+			usr, err := user.Current()
 			tferror.Panic(err)
+
+			err = tfuninstall.All(filepath.Join(usr.HomeDir, "/.tfversion/bin/"))
+			tferror.Panic(err)
+			fmt.Printf("All files are deleted !\n")
 		} else if argv.Version != "" {
 			err = tfuninstall.OneVersion(argv.Version)
 			tferror.Panic(err)
