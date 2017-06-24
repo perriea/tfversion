@@ -1,13 +1,12 @@
 # tfversion
 
-`tfversion` is a command created to switch between different versions of [terraform](https://www.terraform.io).   
-Functional for all versions.
+`tfversion` is a command created to switch between different versions of [terraform](https://www.terraform.io).
 
 ## Build Project
 
 - [Install Golang](https://golang.org/doc/install) (add var ENV),
 - Build with commands `go build` or `go get github.com/perriea/tfversion`,
-- Add in your `.bashrc` (Linux) or `.bash_profile` : `export PATH=$PATH:~/terraform/bin`
+- Add in your `.bashrc` (Linux), `.bash_profile` (Darwin, MacOS) or `.zshrc` : `export PATH=$PATH:~/terraform/bin` and `GOOGLE_APPLICATION_CREDENTIALS` (contain path of Google JSON credential, **optional**).
 
 ## Commands
 
