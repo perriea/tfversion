@@ -5,8 +5,8 @@
 ## Build Project
 
 - [Install Golang](https://golang.org/doc/install) (add var ENV),
-- Build with commands `go build` or `go get github.com/perriea/tfversion`,
-- Add in your `.bashrc` (Linux), `.bash_profile` (Darwin, MacOS) or `.zshrc` : `export PATH=$PATH:~/terraform/bin` and `GOOGLE_APPLICATION_CREDENTIALS` (contain path of Google JSON credential, **optional**).
+- Build with commands `go build`, `make build` or `go get github.com/perriea/tfversion`,
+- Add in your `.bashrc` (Linux), `.bash_profile` (Darwin, MacOS) or `.zshrc` : `export PATH=$PATH:~/.tfversion/bin` and `GOOGLE_APPLICATION_CREDENTIALS` (contain path of Google JSON credential, **optional**).
 
 ## Commands
 
