@@ -1,3 +1,16 @@
+########################################
+#          TFVERSION MAKEFILE          #
+#        Author: Aurelien PERRIER      #
+########################################
+
+GOCMD=go
+GOBUILD=$(GOCMD) build
+GOTEST=$(GOCMD) test
+
+DOCKERCMD=docker
+DOCKERBUILD=$(DOCKERCMD) build
+CONTNAME=perriea/tfversion
+
 .PHONY: help test retest coverage build clean tools dist_tools deps update_deps dist docker
 
 all:
@@ -19,10 +32,10 @@ all:
 ## Tools
 ##
 tools:
-	go get -u github.com/kardianos/govendor
+	$(GOCMD) get -u github.com/kardianos/govendor
 
 docker:
-	@docker build . -t perriea/tfversion
+	$(DOCKERBUILD) . -t $(CONTNAME)
 
 
 ##
@@ -30,10 +43,7 @@ docker:
 ##
 
 test:
-	@GOGC=off go test $$(go list ./... | grep -v '/vendor/')
-
-dist-test:
-	@$(MAKE) test
+	$(GOTEST) $$(go list ./... | grep -v '/vendor/')
 
 
 ##
@@ -44,7 +54,7 @@ dist: clean
 
 build:
 	@mkdir -p ./bin
-	GOGC=off go build -i -o ./bin/tfversion ./
+	$(GOBUILD) -i -o ./bin/tfversion ./
 
 clean:
 	@rm -rf $$GOPATH/pkg/*/github.com/perriea/tfversion{,.*}
