@@ -44,10 +44,12 @@ func Run(version string) error {
 	if check {
 		// Unzip zip archive
 		fmt.Printf("\033[0;37mUnzip file ...\n")
-		tffiles.UnZip(fmt.Sprintf(pathZip, version), pathBin)
+		err = tffiles.UnZipFile(fmt.Sprintf(pathZip, version), pathBin)
+		tferror.Panic(err)
 
 		fmt.Println("\033[0;37mInstall the binary file ...")
-		tffiles.CreateText(version)
+		err = tffiles.CreateVersioning(version)
+		tferror.Panic(err)
 
 		fmt.Printf("\033[1;32mInstalled %s, Thanks ! ♥\n", version)
 	}

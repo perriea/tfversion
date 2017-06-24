@@ -54,6 +54,7 @@ func init() {
 // Run : Launch download
 func Run(version string) bool {
 
+	fmt.Printf("Attempting to download version: %s\n", version)
 	if _, err := os.Stat(fmt.Sprintf(doPathTF, version)); os.IsNotExist(err) {
 
 		match, err := regexp.MatchString("[0-9]+\\.[0-9]+\\.[0-9]+(-(rc|beta)[0-9]+)?", version)
@@ -64,7 +65,6 @@ func Run(version string) bool {
 			errNetwork := tfnetwork.Run(host+":443", 3, false)
 			if errNetwork {
 				// Formulation URL Terraform Website
-				fmt.Printf("Attempting to download version: %s\n", version)
 				urlTF = fmt.Sprintf(urlTF, host, version, version, runtime.GOOS, runtime.GOARCH)
 
 				// Request GET URL
