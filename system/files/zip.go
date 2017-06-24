@@ -53,7 +53,7 @@ func UnZip(archive, target string) {
 	reader, err = zip.OpenReader(filepath.Join(archive))
 	tferror.Panic(err)
 
-	DelFiles("/terraform/bin")
+	DelFiles("/.tfversion/bin")
 
 	for _, file := range reader.File {
 

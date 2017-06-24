@@ -14,6 +14,7 @@ var (
 	count   int
 	all     bool
 	version string
+	tfpath  string
 	usr     *user.User
 	err     error
 )
@@ -21,18 +22,20 @@ var (
 func init() {
 	usr, err = user.Current()
 	tferror.Panic(err)
+
+	tfpath = filepath.Join(usr.HomeDir, "/.tfversion/tmp/")
 }
 
 // Uniq : Delete one version
 func Uniq(version string) error {
 
 	count = 0
-	files, err := ioutil.ReadDir(filepath.Join(usr.HomeDir, "/terraform/tmp/"))
+	files, err := ioutil.ReadDir(tfpath)
 
 	tferror.Panic(err)
 	for _, f := range files {
 		if f.Name() == fmt.Sprintf("terraform-%s.zip", version) {
-			err = os.Remove(filepath.Join(usr.HomeDir, "/terraform/tmp/", f.Name()))
+			err = os.Remove(filepath.Join(tfpath, f.Name()))
 			tferror.Panic(err)
 			count++
 		}
@@ -50,11 +53,11 @@ func Uniq(version string) error {
 // All : Delete all cache
 func All() error {
 
-	files, err := ioutil.ReadDir(filepath.Join(usr.HomeDir, "/terraform/tmp/"))
+	files, err := ioutil.ReadDir(tfpath)
 	tferror.Panic(err)
 
 	for _, f := range files {
-		err = os.Remove(filepath.Join(usr.HomeDir, "/terraform/tmp/", f.Name()))
+		err = os.Remove(filepath.Join(tfpath, f.Name()))
 		tferror.Panic(err)
 		count++
 	}

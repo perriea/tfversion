@@ -18,10 +18,9 @@ func init() {
 	tferror.Panic(err)
 }
 
+// CreateText : Creating a file with the active version
 func CreateText(version string) {
-
 	fileByte := []byte(version)
-
-	err = ioutil.WriteFile(filepath.Join(usr.HomeDir, "/terraform/tmp/.version"), fileByte, 0600)
+	err = ioutil.WriteFile(filepath.Join(usr.HomeDir, "/.tfversion/tmp/.version"), fileByte, 0600)
 	tferror.Panic(err)
 }
