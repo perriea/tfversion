@@ -25,3 +25,4 @@ _testmain.go
 
 .vscode/settings.json
 tfversion*
+debug.log
