@@ -9,61 +9,22 @@ GOTEST=$(GOCMD) test
 
 DOCKERCMD=docker
 DOCKERBUILD=$(DOCKERCMD) build
-CONTNAME=perriea/tfversion
+CONTNAME=perriea/tfversion:latest
 
-.PHONY: help test retest coverage build clean tools dist_tools deps update_deps dist docker
+.PHONY: help test build docker vendor-list vendor-update
 
-all:
-	@echo "*******************************"
-	@echo "**   tfversion build tools   **"
-	@echo "*******************************"
-	@echo "make <cmd>"
-	@echo ""
-	@echo "commands:"
-	@echo "  test        - run go tests"
-	@echo "  build       - build binaries into bin/ directory"
-	@echo "  clean       - clean up bin/ directory"
-	@echo ""
-	@echo "  dist        - clean build with deps and tools"
-	@echo "  tools       - go get's a bunch of tools for dev"
-	@echo "  docker      - Launch container with binary"
-
-##
-## Tools
-##
-tools:
-	$(GOCMD) get -u github.com/kardianos/govendor
+all: build
 
 docker:
+	@GOOS=linux $(GOBUILD) -i -o ./tfversion ./
 	$(DOCKERBUILD) . -t $(CONTNAME)
-
-
-##
-## Development
-##
 
 test:
 	$(GOTEST) $$(go list ./... | grep -v '/vendor/')
 
-
-##
-## Building
-##
-dist: clean
-	$(MAKE) build
-
 build:
-	@mkdir -p ./bin
-	$(GOBUILD) -i -o ./bin/tfversion ./
+	$(GOBUILD) -i -o ./tfversion ./
 
-clean:
-	@rm -rf $$GOPATH/pkg/*/github.com/perriea/tfversion{,.*}
-	@rm -rf ./bin
-
-
-##
-## Dependency mgmt
-##
 vendor-list:
 	@govendor list
 
