@@ -15,10 +15,34 @@
 			"revisionTime": "2017-01-11T10:11:55Z"
 		},
 		{
+			"checksumSHA1": "40vJyUB4ezQSn/NSadsKEOrudMc=",
+			"path": "github.com/inconshreveable/mousetrap",
+			"revision": "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75",
+			"revisionTime": "2014-10-17T20:07:13Z"
+		},
+		{
+			"checksumSHA1": "V/quM7+em2ByJbWBLOsEwnY3j/Q=",
+			"path": "github.com/mitchellh/go-homedir",
+			"revision": "b8bc1bf767474819792c23f32d8286a45736f1c6",
+			"revisionTime": "2016-12-03T19:45:07Z"
+		},
+		{
 			"checksumSHA1": "M57Rrfc8Z966p+IBtQ91QOcUtcg=",
 			"path": "github.com/ryanuber/columnize",
 			"revision": "abc90934186a77966e2beeac62ed966aac0561d5",
 			"revisionTime": "2017-07-03T20:58:27Z"
+		},
+		{
+			"checksumSHA1": "bk8AIaMyTeY7CW85Zg2HDrZVSo0=",
+			"path": "github.com/spf13/cobra",
+			"revision": "be77323fc05148ef091e83b3866c0d47c8e74a8b",
+			"revisionTime": "2018-02-11T16:22:30Z"
+		},
+		{
+			"checksumSHA1": "OJsSYyzbBLtTqWayX2cvg/zI68o=",
+			"path": "github.com/spf13/pflag",
+			"revision": "6a877ebacf28c5fc79846f4fcd380a5d9872b997",
+			"revisionTime": "2018-02-08T21:53:15Z"
 		}
 	],
 	"rootPath": "github.com/perriea/tfversion"
