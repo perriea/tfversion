@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 )
 
-// UninstallOne : Delete one version
-func UninstallOne(version string) error {
+// UnInstallOne : Delete one version
+func UnInstallOne(version string) error {
 	count := 0
 
 	files, err := ioutil.ReadDir(filepath.Join(home, tfVersionHomePath))
@@ -35,8 +35,8 @@ func UninstallOne(version string) error {
 	return nil
 }
 
-// UninstallAll : Delete all files in folder
-func UninstallAll(path string) error {
+// UnInstallAll : Delete all files in folder
+func UnInstallAll(path string) error {
 
 	files, err := ioutil.ReadDir(filepath.Join(path))
 	if err != nil {

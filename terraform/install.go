@@ -17,7 +17,7 @@ func unZipFile(archive string, target string) error {
 		panic(err)
 	}
 
-	err = UninstallAll(filepath.Join(home, tfVersionHomeBin))
+	err = UnInstallAll(filepath.Join(home, tfVersionHomeBin))
 	if err == nil {
 		for _, file := range reader.File {
 

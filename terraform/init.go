@@ -7,7 +7,6 @@ import (
 
 // Init : Create folders (init)
 func Init() {
-	// var tfpaths = []string{"/.tfversion", "/.tfversion/tmp", "/.tfversion/bin"}
 	var tfpaths = []string{tfVersionHomePath, tfVersionHomeBin}
 
 	for _, tfpath := range tfpaths {
