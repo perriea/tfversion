@@ -3,12 +3,6 @@
 	"ignore": "test",
 	"package": [
 		{
-			"checksumSHA1": "Wy9ZbRwHeK2/AcmvgbCJ8W0qSo8=",
-			"path": "github.com/apsdehal/go-logger",
-			"revision": "15baca6eadffd2c13e76e01890ca70eb6d4636f9",
-			"revisionTime": "2017-01-28T02:38:58Z"
-		},
-		{
 			"checksumSHA1": "u0rj5HBwrAYx7nbYg4Hsfppf7B4=",
 			"path": "github.com/google/go-github/github",
 			"revision": "632a2caf6d3d380753dc7e422748202982ad18a3",
