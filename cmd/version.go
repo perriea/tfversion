@@ -3,7 +3,6 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/perriea/tfversion/errors"
 	"github.com/perriea/tfversion/version"
 	"github.com/spf13/cobra"
 )
@@ -18,7 +17,6 @@ var versionCmd = &cobra.Command{
 
 		// Show if the last version
 		test, release := version.LastVersion()
-		errors.Debug(0, "Version", fmt.Sprintf("test: %t", test))
 		if !test && release != nil {
 			fmt.Printf("Your version is out of date ! The latest version is %s.\nYou can update by downloading from Github (%s).", *release.TagName, *release.HTMLURL)
 		}

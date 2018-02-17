@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	homedir "github.com/mitchellh/go-homedir"
-	"github.com/perriea/tfversion/errors"
 )
 
 const urlHashicorp = "https://releases.hashicorp.com/terraform/"
@@ -36,5 +35,7 @@ func init() {
 	client = &http.Client{Transport: transport}
 
 	home, err = homedir.Dir()
-	errors.Panic(err)
+	if err != nil {
+		panic(err)
+	}
 }

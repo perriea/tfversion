@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"github.com/perriea/tfversion/errors"
 	"github.com/perriea/tfversion/terraform"
 	"github.com/spf13/cobra"
 )
@@ -18,10 +17,12 @@ var removeCmd = &cobra.Command{
 	Long:  `Remove local version of Terraform`,
 	Run: func(cmd *cobra.Command, args []string) {
 		err = terraform.UninstallOne(args[0])
-		errors.Panic(err)
+		if err != nil {
+			panic(err)
+		}
 
 		// err = terraform.UninstallAll(filepath.Join(usr.HomeDir, "/.tfversion/bin/"))
-		// errors.Panic(err)
+		// 	if err != nil { 		panic(err) 	}
 		// fmt.Printf("All files are deleted !\n")
 	},
 }

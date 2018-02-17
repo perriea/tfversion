@@ -7,17 +7,17 @@ import (
 	"path/filepath"
 	"regexp"
 	"runtime"
-
-	"github.com/perriea/tfversion/errors"
 )
 
 // Download : Launch download
 func Download(version string) bool {
 
-	fmt.Printf("Attempting to download version: %s\n", version)
+	fmt.Printf("\033[1;36mAttempting to download version (%s) ...\n\n", version)
 	if _, err := os.Stat(filepath.Join(home, tfVersionHomePath, fmt.Sprintf("terraform-%s.zip", version))); os.IsNotExist(err) {
 		match, err := regexp.MatchString("[0-9]+\\.[0-9]+\\.[0-9]+(-(rc|beta)[0-9]+)?", version)
-		errors.Panic(err)
+		if err != nil {
+			panic(err)
+		}
 
 		if match {
 			// Formulation URL Terraform Website
@@ -25,7 +25,9 @@ func Download(version string) bool {
 
 			// Request GET URL
 			resp, err = client.Get(url)
-			errors.Panic(err)
+			if err != nil {
+				panic(err)
+			}
 			defer resp.Body.Close()
 
 			// Verify code equal 200
@@ -34,12 +36,16 @@ func Download(version string) bool {
 				pathTF := fmt.Sprintf("%s%sterraform-%s.zip", home, tfVersionHomePath, version)
 
 				fileUnzip, err := os.Create(pathTF)
-				errors.Panic(err)
+				if err != nil {
+					panic(err)
+				}
 				defer fileUnzip.Close()
 
 				// Copy reponse in file
 				_, err = io.Copy(fileUnzip, resp.Body)
-				errors.Panic(err)
+				if err != nil {
+					panic(err)
+				}
 				return true
 			}
 			fmt.Printf("\033[1;31m[ERROR] Failed, this version doesn't exist !\n")

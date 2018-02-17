@@ -38,13 +38,13 @@ func UninstallOne(version string) error {
 // UninstallAll : Delete all files in folder
 func UninstallAll(path string) error {
 
-	files, err := ioutil.ReadDir(filepath.Join(home, tfVersionHomePath))
+	files, err := ioutil.ReadDir(filepath.Join(path))
 	if err != nil {
 		return err
 	}
 
 	for _, f := range files {
-		err = os.Remove(filepath.Join(home, tfVersionHomePath, f.Name()))
+		err = os.Remove(filepath.Join(path, f.Name()))
 		if err != nil {
 			return err
 		}

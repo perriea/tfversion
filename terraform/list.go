@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"regexp"
 
-	"github.com/perriea/tfversion/errors"
 	"github.com/ryanuber/columnize"
 )
 
@@ -62,13 +61,17 @@ func ListOnline() {
 	)
 
 	resp, err := client.Get(urlHashicorp)
-	errors.Panic(err)
+	if err != nil {
+		panic(err)
+	}
 	defer resp.Body.Close()
 
 	// Verify code equal 200
 	if (err == nil) && (resp.StatusCode == 200) {
 		r, err := regexp.Compile("[0-9]+\\.[0-9]+\\.[0-9]+(-(rc|beta)[0-9]+)?")
-		errors.Panic(err)
+		if err != nil {
+			panic(err)
+		}
 
 		// Convert byte to string
 		buf := new(bytes.Buffer)

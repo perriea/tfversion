@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/perriea/tfversion/errors"
 	"github.com/perriea/tfversion/version"
 	"github.com/spf13/cobra"
 )
@@ -22,7 +21,6 @@ var rootCmd = &cobra.Command{
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		errors.Debug(2, "CLI Error", "Problem on Cobra CLI")
 		fmt.Println(err)
 		os.Exit(1)
 	}

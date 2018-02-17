@@ -3,8 +3,6 @@ package terraform
 import (
 	"os"
 	"path/filepath"
-
-	"github.com/perriea/tfversion/errors"
 )
 
 // Init : Create folders (init)
@@ -14,6 +12,8 @@ func Init() {
 
 	for _, tfpath := range tfpaths {
 		err = os.MkdirAll(filepath.Join(home, tfpath), os.FileMode(0755))
-		errors.Panic(err)
+		if err != nil {
+			panic(err)
+		}
 	}
 }
