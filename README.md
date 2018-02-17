@@ -1,6 +1,6 @@
 # tfversion
 
-`tfversion` is a command created to switch between different versions of [terraform](https://www.terraform.io).
+`tfversion` is a command created to switch between different versions of [Terraform](https://www.terraform.io).
 
 ## Build Project
 
@@ -12,7 +12,7 @@
 
 ``` shell
 ➜  ~ ✗ tfversion
-tfversion v0.1.3
+tfversion v0.1.4-dev
 
 Usage:
 
@@ -25,35 +25,24 @@ Options:
 
 Commands:
 
-  install     install new versions or switch.
+  install     install new versions or switch
   uninstall   uninstall local version of Terraform
-  list        list online or offline version of terraform
-  test        test provider cloud (AWS, GCP)
+  list        list of terraform versions
 ```
 
 ## Docker
 
-### Require
-
-- Docker,
-- AWS access keys (`~/.aws`),
-- GCP access keys (`~/.gcloud` or an other path) and SDK,
-- SSH folder (`~/.ssh`).
-
 ### Install
 
-Pull image `docker pull perriea/tfversion`.   
-Execute command in the terminal : `docker run -it -v ~/.aws:/root/.aws -v ~/.ssh:/root/.ssh perriea/tfversion sh`.   
+Pull image `docker pull perriea/tfversion:latest`.   
+Execute command in the terminal : `docker run -it perriea/tfversion`.   
 
 ## Dependancies
 
-- [kardianos/govendor](https://github.com/kardianos/govendor),
-- [mkideal/cli](https://github.com/mkideal/cli)
+- [spf13/cobra](https://github.com/spf13/cobra)
 - [google/go-github](https://github.com/google/go-github),
-- [aws/aws-sdk-go](https://github.com/aws/aws-sdk-go) (modules: Session, EC2, AWSErr).
-- [GoogleCloudPlatform/google-cloud-go](https://github.com/GoogleCloudPlatform/google-cloud-go)
 
 ## License
 
 The MIT License (MIT)   
-Copyright (c) 2017 Aurelien PERRIER
+Copyright (c) 2017-2018 Aurelien PERRIER
