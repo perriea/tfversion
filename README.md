@@ -39,8 +39,8 @@ Execute command in the terminal : `docker run -it perriea/tfversion`.
 
 ## Dependancies
 
-- [spf13/cobra](https://github.com/spf13/cobra)
-- [google/go-github](https://github.com/google/go-github),
+- [spf13/cobra](https://github.com/spf13/cobra),
+- [google/go-github](https://github.com/google/go-github)
 
 ## License
 
