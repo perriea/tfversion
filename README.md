@@ -5,7 +5,7 @@
 ## Build Project
 
 - [Install Golang](https://golang.org/doc/install) (add var ENV),
-- Build with commands `go build`, `make build` or `go get github.com/perriea/tfversion`,
+- Build with commands `go build`, `make` or `go get -u github.com/perriea/tfversion`,
 - Add in your `.bashrc` (Linux), `.bash_profile` (Darwin, MacOS) or `.zshrc` : `export PATH=$PATH:~/.tfversion/bin` and `GOOGLE_APPLICATION_CREDENTIALS` (contain path of Google JSON credential, **optional**).
 
 ## Commands
@@ -39,8 +39,8 @@ Execute command in the terminal : `docker run -it perriea/tfversion`.
 
 ## Dependancies
 
-- [spf13/cobra](https://github.com/spf13/cobra)
-- [google/go-github](https://github.com/google/go-github),
+- [spf13/cobra](https://github.com/spf13/cobra),
+- [google/go-github](https://github.com/google/go-github)
 
 ## License
 

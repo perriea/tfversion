@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/perriea/tfversion/terraform"
 	"github.com/spf13/cobra"
 )
@@ -14,7 +16,11 @@ var installCmd = &cobra.Command{
 		terraform.Init()
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		terraform.Install(args[0])
+		if len(args) > 0 {
+			terraform.Install(args[0])
+		} else {
+			fmt.Printf("\033[1;31mNone version specified\n")
+		}
 	},
 }
 

@@ -23,7 +23,7 @@ const Repository = "https://github.com/perriea/tfversion"
 // Prerelease marker for the version. If this is "" (empty string)
 // then it means that it is a final release. Otherwise, this is a pre-release
 // such as "dev" (in development), "beta", "rc1", etc.
-var Prerelease = "dev"
+var Prerelease = ""
 
 // String returns the complete version string, including prerelease
 func String() string {
