@@ -1,4 +1,5 @@
 # tfversion
+[![Go Report Card](https://goreportcard.com/badge/github.com/perriea/tfversion)](https://goreportcard.com/report/github.com/perriea/tfversion) [![Build Status](https://travis-ci.org/perriea/tfversion.svg?branch=master)](https://travis-ci.org/perriea/tfversion) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 `tfversion` is a command created to switch between different versions of [Terraform](https://www.terraform.io).
 
