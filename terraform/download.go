@@ -10,9 +10,9 @@ import (
 )
 
 // Download : Launch download
-func Download(version string) bool {
+func Download(version string, quiet bool) bool {
 
-	fmt.Printf("\033[1;36mAttempting to download version (%s) ...\n\n", version)
+	Quiet(fmt.Sprintf("\033[1;36mAttempting to download version (%s) ...\n", version), quiet)
 	if _, err := os.Stat(filepath.Join(home, tfVersionHomePath, fmt.Sprintf("terraform-%s.zip", version))); os.IsNotExist(err) {
 		match, err := regexp.MatchString("[0-9]+\\.[0-9]+\\.[0-9]+(-(rc|beta)[0-9]+)?", version)
 		if err != nil {
@@ -32,7 +32,7 @@ func Download(version string) bool {
 
 			// Verify code equal 200
 			if (err == nil) && (resp.StatusCode == 200) {
-				fmt.Printf("\033[1;32mStart download ...\n")
+				Quiet("\033[1;32mStart download ...\n", quiet)
 				pathTF := fmt.Sprintf("%s%sterraform-%s.zip", home, tfVersionHomePath, version)
 
 				fileUnzip, err := os.Create(pathTF)
@@ -48,12 +48,12 @@ func Download(version string) bool {
 				}
 				return true
 			}
-			fmt.Printf("\033[1;31m[ERROR] Failed, this version doesn't exist !\n")
+			Quiet("\033[1;31m[ERROR] Failed, this version doesn't exist !", quiet)
 			return false
 		}
-		fmt.Printf("\033[1;31m[ERROR] Failed, the format version is not correct ...\n")
+		Quiet("\033[1;31m[ERROR] Failed, the format version is not correct ...", quiet)
 		return false
 	}
-	fmt.Printf("\033[1;34mAlready in cache ...\n")
+	Quiet("\033[1;34mAlready in cache ...", quiet)
 	return true
 }

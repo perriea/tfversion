@@ -2,6 +2,8 @@ package terraform
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 	"testing"
 )
 
@@ -15,11 +17,32 @@ func TestInstall(t *testing.T) {
 
 	for _, version := range versions {
 
-		err = Install(version)
+		err = Install(version, false)
 		if err != nil {
 			t.Fatalf("installation failed (%s)\n", version)
 		} else {
 			fmt.Printf("installation OK (%s)\n", version)
+		}
+	}
+}
+
+// TestInitFolder : Testing creation folder
+func TestInitFolder(t *testing.T) {
+	var (
+		paths []string
+		info  os.FileInfo
+	)
+
+	paths = []string{filepath.Join(home, tfVersionHomePath), filepath.Join(home, tfVersionHomeBin)}
+
+	for _, path := range paths {
+		InitFolder()
+
+		info, err = os.Stat(path)
+		if err != nil && info.IsDir() {
+			t.Fatalf("folder created (%s)\n", path)
+		} else {
+			fmt.Printf("folder OK (%s)\n", path)
 		}
 	}
 }
