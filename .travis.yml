@@ -11,8 +11,7 @@ matrix:
   fast_finish: true
 
 before_script:
-  - go vet ./...
-  - go get -u github.com/kardianos/govendor
+  - mkdir -p ~/.tfversion/{tmp,bin}
 
 script:
   - make test
