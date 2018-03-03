@@ -17,7 +17,7 @@ func TestDownload(t *testing.T) {
 	for _, version := range versions {
 		test = false
 
-		test = Download(version)
+		test = Download(version, false)
 		if !test {
 			t.Fatalf("download failed (%s)\n", version)
 		} else {

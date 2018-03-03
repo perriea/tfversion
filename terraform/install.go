@@ -50,15 +50,15 @@ func unZipFile(archive string, target string) error {
 }
 
 // Install : Install terraform
-func Install(version string) error {
+func Install(version string, quiet bool) error {
 
 	// Lauch Terraform download
-	check := Download(version)
+	check := Download(version, quiet)
 
 	// Check if download is ok and install
 	if check {
 		// Unzip archive
-		fmt.Println("\033[1;33mInstall the binary file ...")
+		Quiet("\033[1;33mInstall the binary file ...", quiet)
 		err = unZipFile(filepath.Join(home, tfVersionHomePath, fmt.Sprintf("/terraform-%s.zip", version)), filepath.Join(home, tfVersionHomeBin))
 		if err != nil {
 			panic(err)
@@ -69,8 +69,20 @@ func Install(version string) error {
 		if err != nil {
 			panic(err)
 		}
-		fmt.Printf("\033[1;32mv%s installed ♥\n", version)
+		Quiet(fmt.Sprintf("\033[1;32mv%s installed ♥", version), quiet)
 	}
 
 	return err
+}
+
+// Init : Create folders (init)
+func InitFolder() {
+	var tfpaths = []string{tfVersionHomePath, tfVersionHomeBin}
+
+	for _, tfpath := range tfpaths {
+		err = os.MkdirAll(filepath.Join(home, tfpath), os.FileMode(0755))
+		if err != nil {
+			panic(err)
+		}
+	}
 }

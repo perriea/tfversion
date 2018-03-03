@@ -13,11 +13,11 @@ var installCmd = &cobra.Command{
 	Short: "Install new versions or switch",
 	Long:  `Install new versions or switch.`,
 	PreRun: func(cmd *cobra.Command, args []string) {
-		terraform.Init()
+		terraform.InitFolder()
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) > 0 {
-			terraform.Install(args[0])
+			terraform.Install(args[0], true)
 		} else {
 			fmt.Printf("\033[1;31mNone version specified\n")
 		}
