@@ -8,8 +8,8 @@ import (
 // listCmd represents the list command
 var listCmd = &cobra.Command{
 	Use:   "list",
-	Short: "List of terraform versions",
-	Long:  `List of terraform versions`,
+	Short: "List of all available versions",
+	Long:  `List of all available versions`,
 	Run: func(cmd *cobra.Command, args []string) {
 		terraform.ListOnline()
 	},

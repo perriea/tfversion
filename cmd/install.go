@@ -10,8 +10,8 @@ import (
 // installCmd represents the install command
 var installCmd = &cobra.Command{
 	Use:   "install",
-	Short: "Install new versions or switch",
-	Long:  `Install new versions or switch.`,
+	Short: "Install new version",
+	Long:  `Install new version or switch.`,
 	PreRun: func(cmd *cobra.Command, args []string) {
 		terraform.InitFolder()
 	},
