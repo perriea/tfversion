@@ -7,28 +7,28 @@
 
 - [Install Golang](https://golang.org/doc/install) (add var ENV),
 - Build with commands `go build`, `make` or `go get -u github.com/perriea/tfversion`,
-- Add in your `.bashrc` (Linux), `.bash_profile` (Darwin, MacOS) or `.zshrc` : `export PATH=$PATH:~/.tfversion/bin` and `GOOGLE_APPLICATION_CREDENTIALS` (contain path of Google JSON credential, **optional**).
+- Add in your `.bashrc` (Linux), `.bash_profile` (Darwin, MacOS) or `.zshrc` : `export PATH=$PATH:$HOME/.tfversion/bin`.
 
 ## Commands
 
 ``` shell
 ➜  ~ ✗ tfversion
-tfversion v0.1.4-dev
+tfversion v0.1.5 - Switcher Terraform
 
 Usage:
+  tfversion [command]
 
-  tfversion <command> [option]
+Available Commands:
+  help        Help about any command
+  install     Install new versions or switch
+  list        List of terraform versions
+  remove      Remove local version of Terraform
+  version     Version installed of switcher Terraform
 
-Options:
+Flags:
+  -h, --help   help for tfversion
 
-  -h, --help      display help information
-  -v, --version   show version and check update
-
-Commands:
-
-  install     install new versions or switch
-  uninstall   uninstall local version of Terraform
-  list        list of terraform versions
+Use "tfversion [command] --help" for more information about a command.
 ```
 
 ## Docker
@@ -42,6 +42,10 @@ Execute command in the terminal : `docker run -it perriea/tfversion`.
 
 - [spf13/cobra](https://github.com/spf13/cobra),
 - [google/go-github](https://github.com/google/go-github)
+
+## Used by
+
+- [perriea/tfwrapper](https://github.com/perriea/tfwrapper)
 
 ## License
 
