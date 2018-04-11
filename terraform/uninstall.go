@@ -27,7 +27,7 @@ func UnInstallOne(version string) error {
 	}
 
 	if count == 0 {
-		fmt.Printf("\033[1;34m[INFO] Nothing deleted !\n")
+		fmt.Printf("\033[1;34mNothing deleted !\n")
 	} else {
 		fmt.Printf("\033[1;32mVersion %s is deleted !\n", version)
 	}
@@ -36,15 +36,14 @@ func UnInstallOne(version string) error {
 }
 
 // UnInstallAll : Delete all files in folder
-func UnInstallAll(path string) error {
-
-	files, err := ioutil.ReadDir(filepath.Join(path))
+func UnInstallAll() error {
+	files, err := ioutil.ReadDir(filepath.Join(home, tfVersionHomePath))
 	if err != nil {
 		return err
 	}
 
 	for _, f := range files {
-		err = os.Remove(filepath.Join(path, f.Name()))
+		err = os.Remove(filepath.Join(home, tfVersionHomePath, f.Name()))
 		if err != nil {
 			return err
 		}

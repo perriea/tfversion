@@ -17,32 +17,29 @@ func unZipFile(archive string, target string) error {
 		panic(err)
 	}
 
-	err = UnInstallAll(filepath.Join(home, tfVersionHomeBin))
-	if err == nil {
-		for _, file := range reader.File {
+	for _, file := range reader.File {
 
-			path := filepath.Join(target, file.Name)
-			if file.FileInfo().IsDir() {
-				os.MkdirAll(path, file.Mode())
-				continue
-			}
+		path := filepath.Join(target, file.Name)
+		if file.FileInfo().IsDir() {
+			os.MkdirAll(path, file.Mode())
+			continue
+		}
 
-			fileReader, err := file.Open()
-			if err != nil {
-				panic(err)
-			}
-			defer fileReader.Close()
+		fileReader, err := file.Open()
+		if err != nil {
+			panic(err)
+		}
+		defer fileReader.Close()
 
-			targetFile, err := os.OpenFile(filepath.Join(home, tfVersionHomeBin, "terraform"), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, file.Mode())
-			if err != nil {
-				panic(err)
-			}
-			defer targetFile.Close()
+		targetFile, err := os.OpenFile(filepath.Join(home, tfVersionHomeBin, "terraform"), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, file.Mode())
+		if err != nil {
+			panic(err)
+		}
+		defer targetFile.Close()
 
-			_, err = io.Copy(targetFile, fileReader)
-			if err != nil {
-				panic(err)
-			}
+		_, err = io.Copy(targetFile, fileReader)
+		if err != nil {
+			panic(err)
 		}
 	}
 
@@ -75,7 +72,7 @@ func Install(version string, quiet bool) error {
 	return err
 }
 
-// Init : Create folders (init)
+// InitFolder : Create folders (init)
 func InitFolder() {
 	var tfpaths = []string{tfVersionHomePath, tfVersionHomeBin}
 

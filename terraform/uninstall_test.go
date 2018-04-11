@@ -2,7 +2,6 @@ package terraform
 
 import (
 	"fmt"
-	"path/filepath"
 	"testing"
 )
 
@@ -27,19 +26,9 @@ func TestUnInstallOne(t *testing.T) {
 
 // TestUnInstallOne : testing installation
 func TestUnInstallAll(t *testing.T) {
-	var (
-		paths []string
-	)
-
-	paths = []string{filepath.Join(home, tfVersionHomePath), filepath.Join(home, tfVersionHomeBin)}
-
-	for _, path := range paths {
-
-		err = UnInstallAll(path)
-		if err != nil {
-			t.Fatalf("uninstall failed (%s)\n", version)
-		} else {
-			fmt.Printf("uninstall OK (%s)\n", version)
-		}
+	if err = UnInstallAll(); err != nil {
+		t.Fatalf("uninstall failed (%s)\n", version)
+	} else {
+		fmt.Printf("uninstall OK (%s)\n", version)
 	}
 }
