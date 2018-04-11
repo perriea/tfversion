@@ -3,10 +3,10 @@
 	"ignore": "test",
 	"package": [
 		{
-			"checksumSHA1": "u0rj5HBwrAYx7nbYg4Hsfppf7B4=",
+			"checksumSHA1": "3bPsnGG9w8oI+q7d9szukc4xAEg=",
 			"path": "github.com/google/go-github/github",
-			"revision": "632a2caf6d3d380753dc7e422748202982ad18a3",
-			"revisionTime": "2018-02-12T18:46:55Z"
+			"revision": "89a446efe88e1636068183a91ca8845683683477",
+			"revisionTime": "2018-04-11T04:51:06Z"
 		},
 		{
 			"checksumSHA1": "p3IB18uJRs4dL2K5yx24MrLYE9A=",
@@ -33,16 +33,16 @@
 			"revisionTime": "2017-07-03T20:58:27Z"
 		},
 		{
-			"checksumSHA1": "bk8AIaMyTeY7CW85Zg2HDrZVSo0=",
+			"checksumSHA1": "imvfVf7lRxu0Fz7V2G43CUC6Ff0=",
 			"path": "github.com/spf13/cobra",
-			"revision": "be77323fc05148ef091e83b3866c0d47c8e74a8b",
-			"revisionTime": "2018-02-11T16:22:30Z"
+			"revision": "cd30c2a7e91a1d63fd9a0027accf18a681e9d50b",
+			"revisionTime": "2018-04-08T16:17:36Z"
 		},
 		{
-			"checksumSHA1": "OJsSYyzbBLtTqWayX2cvg/zI68o=",
+			"checksumSHA1": "g1VezbyCUd4iV39jBQLunuAsLZ4=",
 			"path": "github.com/spf13/pflag",
-			"revision": "6a877ebacf28c5fc79846f4fcd380a5d9872b997",
-			"revisionTime": "2018-02-08T21:53:15Z"
+			"revision": "329ebf1e04800d11a25047832495199d366580f3",
+			"revisionTime": "2018-04-10T21:30:10Z"
 		}
 	],
 	"rootPath": "github.com/perriea/tfversion"
