@@ -5,24 +5,18 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
-	vTerraform string
-	all        bool
-	err        error
-)
-
 // removeCmd represents the remove command
 var removeCmd = &cobra.Command{
-	Use:   "remove",
+	Use:   "remove [version]",
 	Short: "Remove local version of Terraform",
 	Long:  `Remove local version of Terraform`,
 	Run: func(cmd *cobra.Command, args []string) {
-		if (vTerraform != "" && vTerraform != "noversion") && !all {
-			if err = terraform.UnInstall(vTerraform, false); err != nil {
+		if len(args) > 0 && !all {
+			if err = terraform.UnInstall(args[0], quiet); err != nil {
 				panic(err)
 			}
 		} else if all {
-			if err = terraform.UnInstall("all", false); err != nil {
+			if err = terraform.UnInstall("all", quiet); err != nil {
 				panic(err)
 			}
 		} else {
@@ -33,7 +27,6 @@ var removeCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(removeCmd)
-
-	removeCmd.Flags().StringVar(&vTerraform, "version", "noversion", "Remove one version of Terraform")
-	removeCmd.Flags().BoolVar(&all, "all", false, "Remove all version of Terraform")
+	removeCmd.Flags().BoolVarP(&all, "all", "a", false, "Remove all version of Terraform")
+	removeCmd.Flags().BoolVarP(&quiet, "quiet", "q", false, "Do not show information messages")
 }
