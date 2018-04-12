@@ -8,10 +8,12 @@ import (
 // listCmd represents the list command
 var listCmd = &cobra.Command{
 	Use:   "list",
-	Short: "List of all available versions",
-	Long:  `List of all available versions`,
+	Short: "List of available versions",
+	Long:  `List of available versions`,
 	Run: func(cmd *cobra.Command, args []string) {
-		terraform.ListOnline()
+		if err = terraform.ListOnline(); err != nil {
+			panic(err)
+		}
 	},
 }
 

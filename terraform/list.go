@@ -54,7 +54,7 @@ func showList(list []string, tfversion string) {
 }
 
 // ListOnline : List online version
-func ListOnline() {
+func ListOnline() error {
 	var (
 		versions []string
 		cleaned  []string
@@ -62,7 +62,7 @@ func ListOnline() {
 
 	resp, err := client.Get(urlHashicorp)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	defer resp.Body.Close()
 
@@ -70,7 +70,7 @@ func ListOnline() {
 	if (err == nil) && (resp.StatusCode == 200) {
 		r, err := regexp.Compile("[0-9]+\\.[0-9]+\\.[0-9]+(-(rc|beta)[0-9]+)?")
 		if err != nil {
-			panic(err)
+			return err
 		}
 
 		// Convert byte to string
@@ -91,4 +91,6 @@ func ListOnline() {
 		// Show versions
 		showList(cleaned, "0")
 	}
+
+	return nil
 }
