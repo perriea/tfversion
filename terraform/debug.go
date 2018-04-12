@@ -5,9 +5,9 @@ import (
 	"os"
 )
 
-// Quiet : Show or not message
-func Quiet(message string, quiet bool) {
-	if quiet == true {
+// ShowMessage : Show or not message
+func ShowMessage(message string, quiet bool) {
+	if !quiet {
 		fmt.Println(message)
 	}
 }

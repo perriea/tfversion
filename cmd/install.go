@@ -12,9 +12,6 @@ var installCmd = &cobra.Command{
 	Use:   "install",
 	Short: "Install new version",
 	Long:  `Install new version or switch.`,
-	PreRun: func(cmd *cobra.Command, args []string) {
-		terraform.InitFolder()
-	},
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) > 0 {
 			terraform.Install(args[0], true)
