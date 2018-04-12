@@ -10,7 +10,7 @@ import (
 // versionCmd represents the version command
 var versionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "Version installed of switcher Terraform",
+	Short: "Version installed",
 	Long:  `Version installed of switcher Terraform`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("tfversion v%s\n\n", version.String())

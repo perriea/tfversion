@@ -10,11 +10,8 @@ import (
 // installCmd represents the install command
 var installCmd = &cobra.Command{
 	Use:   "install",
-	Short: "Install new versions or switch",
-	Long:  `Install new versions or switch.`,
-	PreRun: func(cmd *cobra.Command, args []string) {
-		terraform.InitFolder()
-	},
+	Short: "Install new version",
+	Long:  `Install new version or switch.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) > 0 {
 			terraform.Install(args[0], true)

@@ -4,29 +4,60 @@
 ########################################
 
 GOCMD=go
+DOCKERCMD=docker
+
+SOURCEDIR=.
+SOURCES := $(shell find $(SOURCEDIR) -name '*.go' | grep -v 'vendor')
+BIN_FOLDER=bin/
+BIN=$(BIN_FOLDER)tfversion
+
 GOBUILD=$(GOCMD) build
 GOTEST=$(GOCMD) test
 
-DOCKERCMD=docker
 DOCKERBUILD=$(DOCKERCMD) build
 CONTNAME=perriea/tfversion:latest
 
-.PHONY: help test build docker vendor-list vendor-update
-
 all: build
 
-docker:
-	@GOOS=linux $(GOBUILD) -i -o ./tfversion ./
-	$(DOCKERBUILD) . -t $(CONTNAME)
+build: $(SOURCES)
+	@echo "Build binary"
+	@$(GOBUILD) -i -o ./$(BIN) ./
 
-test:
-	$(GOTEST) $$(go list ./... | grep -v '/vendor/')
+install: fmt
+	go install
 
-build:
-	$(GOBUILD) -i -o ./tfversion ./
+fmt:
+	gofmt -w $(SOURCES)
+
+vendor-status:
+	@govendor status
 
 vendor-list:
 	@govendor list
 
 vendor-update:
 	@govendor update +vendor
+
+docker:
+	@echo "Build binary ..."
+	@GOOS=linux $(GOBUILD) -i -o ./$(BIN) ./
+	@echo "Build Docker image ..."
+	$(DOCKERBUILD) . -t $(CONTNAME)
+
+test:
+	@echo "Testing ..."
+	$(GOTEST) `go list ./... | grep -v '/vendor/'`
+
+vet:
+	@echo "go vet ."
+	@go vet $$(go list ./... | grep -v vendor/) ; if [ $$? -eq 1 ]; then \
+		echo ""; \
+		echo "Vet found suspicious constructs. Please check the reported constructs"; \
+		echo "and fix them if necessary before submitting the code for review."; \
+		exit 1; \
+	fi
+
+clean:
+	$(RM) ${BIN}
+
+.PHONY: help build install fmt vendor-status vendor-list vendor-update docker test vet clean

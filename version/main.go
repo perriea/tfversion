@@ -15,7 +15,7 @@ var (
 )
 
 // Version number that is being run at the moment.
-const Version = "0.1.4"
+const Version = "0.1.5"
 
 // Repository Git
 const Repository = "https://github.com/perriea/tfversion"

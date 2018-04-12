@@ -1324,6 +1324,30 @@ func (c *CreateEvent) GetSender() *User {
 	return c.Sender
 }
 
+// GetEmail returns the Email field if it's non-nil, zero value otherwise.
+func (c *CreateOrgInvitationOptions) GetEmail() string {
+	if c == nil || c.Email == nil {
+		return ""
+	}
+	return *c.Email
+}
+
+// GetInviteeID returns the InviteeID field if it's non-nil, zero value otherwise.
+func (c *CreateOrgInvitationOptions) GetInviteeID() int64 {
+	if c == nil || c.InviteeID == nil {
+		return 0
+	}
+	return *c.InviteeID
+}
+
+// GetRole returns the Role field if it's non-nil, zero value otherwise.
+func (c *CreateOrgInvitationOptions) GetRole() string {
+	if c == nil || c.Role == nil {
+		return ""
+	}
+	return *c.Role
+}
+
 // GetInstallation returns the Installation field.
 func (d *DeleteEvent) GetInstallation() *Installation {
 	if d == nil {
@@ -1738,6 +1762,22 @@ func (d *DeploymentStatusRequest) GetState() string {
 		return ""
 	}
 	return *d.State
+}
+
+// GetTeams returns the Teams field if it's non-nil, zero value otherwise.
+func (d *DismissalRestrictionsRequest) GetTeams() []string {
+	if d == nil || d.Teams == nil {
+		return nil
+	}
+	return *d.Teams
+}
+
+// GetUsers returns the Users field if it's non-nil, zero value otherwise.
+func (d *DismissalRestrictionsRequest) GetUsers() []string {
+	if d == nil || d.Users == nil {
+		return nil
+	}
+	return *d.Users
 }
 
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
@@ -2684,6 +2724,14 @@ func (i *Installation) GetAccount() *User {
 	return i.Account
 }
 
+// GetAppID returns the AppID field if it's non-nil, zero value otherwise.
+func (i *Installation) GetAppID() int64 {
+	if i == nil || i.AppID == nil {
+		return 0
+	}
+	return *i.AppID
+}
+
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
 func (i *Installation) GetHTMLURL() string {
 	if i == nil || i.HTMLURL == nil {
@@ -2700,12 +2748,52 @@ func (i *Installation) GetID() int64 {
 	return *i.ID
 }
 
+// GetPermissions returns the Permissions field.
+func (i *Installation) GetPermissions() *InstallationPermissions {
+	if i == nil {
+		return nil
+	}
+	return i.Permissions
+}
+
 // GetRepositoriesURL returns the RepositoriesURL field if it's non-nil, zero value otherwise.
 func (i *Installation) GetRepositoriesURL() string {
 	if i == nil || i.RepositoriesURL == nil {
 		return ""
 	}
 	return *i.RepositoriesURL
+}
+
+// GetRepositorySelection returns the RepositorySelection field if it's non-nil, zero value otherwise.
+func (i *Installation) GetRepositorySelection() string {
+	if i == nil || i.RepositorySelection == nil {
+		return ""
+	}
+	return *i.RepositorySelection
+}
+
+// GetSingleFileName returns the SingleFileName field if it's non-nil, zero value otherwise.
+func (i *Installation) GetSingleFileName() string {
+	if i == nil || i.SingleFileName == nil {
+		return ""
+	}
+	return *i.SingleFileName
+}
+
+// GetTargetID returns the TargetID field if it's non-nil, zero value otherwise.
+func (i *Installation) GetTargetID() int64 {
+	if i == nil || i.TargetID == nil {
+		return 0
+	}
+	return *i.TargetID
+}
+
+// GetTargetType returns the TargetType field if it's non-nil, zero value otherwise.
+func (i *Installation) GetTargetType() string {
+	if i == nil || i.TargetType == nil {
+		return ""
+	}
+	return *i.TargetType
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
@@ -2730,6 +2818,38 @@ func (i *InstallationEvent) GetSender() *User {
 		return nil
 	}
 	return i.Sender
+}
+
+// GetContents returns the Contents field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetContents() string {
+	if i == nil || i.Contents == nil {
+		return ""
+	}
+	return *i.Contents
+}
+
+// GetIssues returns the Issues field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetIssues() string {
+	if i == nil || i.Issues == nil {
+		return ""
+	}
+	return *i.Issues
+}
+
+// GetMetadata returns the Metadata field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetMetadata() string {
+	if i == nil || i.Metadata == nil {
+		return ""
+	}
+	return *i.Metadata
+}
+
+// GetSingleFile returns the SingleFile field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetSingleFile() string {
+	if i == nil || i.SingleFile == nil {
+		return ""
+	}
+	return *i.SingleFile
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
@@ -2804,6 +2924,14 @@ func (i *Invitation) GetID() int64 {
 	return *i.ID
 }
 
+// GetInvitationTeamURL returns the InvitationTeamURL field if it's non-nil, zero value otherwise.
+func (i *Invitation) GetInvitationTeamURL() string {
+	if i == nil || i.InvitationTeamURL == nil {
+		return ""
+	}
+	return *i.InvitationTeamURL
+}
+
 // GetInviter returns the Inviter field.
 func (i *Invitation) GetInviter() *User {
 	if i == nil {
@@ -2826,6 +2954,14 @@ func (i *Invitation) GetRole() string {
 		return ""
 	}
 	return *i.Role
+}
+
+// GetTeamCount returns the TeamCount field if it's non-nil, zero value otherwise.
+func (i *Invitation) GetTeamCount() int {
+	if i == nil || i.TeamCount == nil {
+		return 0
+	}
+	return *i.TeamCount
 }
 
 // GetAssignee returns the Assignee field.
@@ -5212,6 +5348,14 @@ func (p *Project) GetName() string {
 	return *p.Name
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (p *Project) GetNodeID() string {
+	if p == nil || p.NodeID == nil {
+		return ""
+	}
+	return *p.NodeID
+}
+
 // GetNumber returns the Number field if it's non-nil, zero value otherwise.
 func (p *Project) GetNumber() int {
 	if p == nil || p.Number == nil {
@@ -5290,6 +5434,14 @@ func (p *ProjectCard) GetID() int64 {
 		return 0
 	}
 	return *p.ID
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (p *ProjectCard) GetNodeID() string {
+	if p == nil || p.NodeID == nil {
+		return ""
+	}
+	return *p.NodeID
 }
 
 // GetNote returns the Note field if it's non-nil, zero value otherwise.
@@ -5402,6 +5554,14 @@ func (p *ProjectColumn) GetName() string {
 		return ""
 	}
 	return *p.Name
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (p *ProjectColumn) GetNodeID() string {
+	if p == nil || p.NodeID == nil {
+		return ""
+	}
+	return *p.NodeID
 }
 
 // GetProjectURL returns the ProjectURL field if it's non-nil, zero value otherwise.
@@ -5684,12 +5844,28 @@ func (p *PullRequest) GetComments() int {
 	return *p.Comments
 }
 
+// GetCommentsURL returns the CommentsURL field if it's non-nil, zero value otherwise.
+func (p *PullRequest) GetCommentsURL() string {
+	if p == nil || p.CommentsURL == nil {
+		return ""
+	}
+	return *p.CommentsURL
+}
+
 // GetCommits returns the Commits field if it's non-nil, zero value otherwise.
 func (p *PullRequest) GetCommits() int {
 	if p == nil || p.Commits == nil {
 		return 0
 	}
 	return *p.Commits
+}
+
+// GetCommitsURL returns the CommitsURL field if it's non-nil, zero value otherwise.
+func (p *PullRequest) GetCommitsURL() string {
+	if p == nil || p.CommitsURL == nil {
+		return ""
+	}
+	return *p.CommitsURL
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
@@ -6092,6 +6268,14 @@ func (p *PullRequestEvent) GetInstallation() *Installation {
 	return p.Installation
 }
 
+// GetLabel returns the Label field.
+func (p *PullRequestEvent) GetLabel() *Label {
+	if p == nil {
+		return nil
+	}
+	return p.Label
+}
+
 // GetNumber returns the Number field if it's non-nil, zero value otherwise.
 func (p *PullRequestEvent) GetNumber() int {
 	if p == nil || p.Number == nil {
@@ -6114,6 +6298,14 @@ func (p *PullRequestEvent) GetRepo() *Repository {
 		return nil
 	}
 	return p.Repo
+}
+
+// GetRequestedReviewer returns the RequestedReviewer field.
+func (p *PullRequestEvent) GetRequestedReviewer() *User {
+	if p == nil {
+		return nil
+	}
+	return p.RequestedReviewer
 }
 
 // GetSender returns the Sender field.
@@ -6980,6 +7172,14 @@ func (r *Reaction) GetID() int64 {
 	return *r.ID
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (r *Reaction) GetNodeID() string {
+	if r == nil || r.NodeID == nil {
+		return ""
+	}
+	return *r.NodeID
+}
+
 // GetUser returns the User field.
 func (r *Reaction) GetUser() *User {
 	if r == nil {
@@ -7138,6 +7338,14 @@ func (r *ReleaseAsset) GetName() string {
 		return ""
 	}
 	return *r.Name
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (r *ReleaseAsset) GetNodeID() string {
+	if r == nil || r.NodeID == nil {
+		return ""
+	}
+	return *r.NodeID
 }
 
 // GetSize returns the Size field if it's non-nil, zero value otherwise.
@@ -8498,6 +8706,14 @@ func (r *RepositoryRelease) GetName() string {
 		return ""
 	}
 	return *r.Name
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (r *RepositoryRelease) GetNodeID() string {
+	if r == nil || r.NodeID == nil {
+		return ""
+	}
+	return *r.NodeID
 }
 
 // GetPrerelease returns the Prerelease field if it's non-nil, zero value otherwise.

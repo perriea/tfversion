@@ -6,8 +6,9 @@ import (
 )
 
 var (
-	Version string
-	err     error
+	vTerraform string
+	all        bool
+	err        error
 )
 
 // removeCmd represents the remove command
@@ -16,20 +17,23 @@ var removeCmd = &cobra.Command{
 	Short: "Remove local version of Terraform",
 	Long:  `Remove local version of Terraform`,
 	Run: func(cmd *cobra.Command, args []string) {
-		err = terraform.UnInstallOne(args[0])
-		if err != nil {
-			panic(err)
+		if (vTerraform != "" && vTerraform != "noversion") && !all {
+			if err = terraform.UnInstall(vTerraform, false); err != nil {
+				panic(err)
+			}
+		} else if all {
+			if err = terraform.UnInstall("all", false); err != nil {
+				panic(err)
+			}
+		} else {
+			cmd.Help()
 		}
-
-		// err = terraform.UnInstallAll(filepath.Join(usr.HomeDir, "/.tfversion/bin/"))
-		// 	if err != nil { 		panic(err) 	}
-		// fmt.Printf("All files are deleted !\n")
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(removeCmd)
 
-	removeCmd.Flags().StringVarP(&Version, "version", "v", "", "Remove one version of Terraform")
-	// removeCmd.Flags().BoolP("all", "a", false, "Remove all version of Terraform")
+	removeCmd.Flags().StringVar(&vTerraform, "version", "noversion", "Remove one version of Terraform")
+	removeCmd.Flags().BoolVar(&all, "all", false, "Remove all version of Terraform")
 }

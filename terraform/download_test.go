@@ -1,7 +1,6 @@
 package terraform
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -17,11 +16,11 @@ func TestDownload(t *testing.T) {
 	for _, version := range versions {
 		test = false
 
-		test = Download(version, false)
-		if !test {
+		test, err = Download(version, true)
+		if !test || err != nil {
 			t.Fatalf("download failed (%s)\n", version)
 		} else {
-			fmt.Printf("download OK (%s)\n", version)
+			t.Logf("download OK (%s)\n", version)
 		}
 	}
 }

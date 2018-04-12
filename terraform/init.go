@@ -3,6 +3,8 @@ package terraform
 import (
 	"crypto/tls"
 	"net/http"
+	"os"
+	"path/filepath"
 
 	homedir "github.com/mitchellh/go-homedir"
 )
@@ -38,4 +40,25 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+
+	if err = initFolder(); err != nil {
+		panic(err)
+	}
+}
+
+// InitFolder : Create folders (init)
+func initFolder() error {
+	var tfpaths = []string{
+		tfVersionHomePath,
+		tfVersionHomeBin,
+	}
+
+	for _, tfpath := range tfpaths {
+		err = os.MkdirAll(filepath.Join(home, tfpath), os.FileMode(0755))
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
