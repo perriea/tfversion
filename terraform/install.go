@@ -10,7 +10,7 @@ import (
 )
 
 // UnZipFile : UnZip one file
-func unZipArchive(archive string, target string) error {
+func (release Release) unZip(archive string, target string) error {
 
 	reader, err := zip.OpenReader(filepath.Join(archive))
 	if err != nil {
@@ -30,7 +30,7 @@ func unZipArchive(archive string, target string) error {
 		}
 		defer fileReader.Close()
 
-		targetFile, err := os.OpenFile(filepath.Join(home, tfVersionHomeBin, "terraform"), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, file.Mode())
+		targetFile, err := os.OpenFile(filepath.Join(release.Home, folders["bin"], "terraform"), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, file.Mode())
 		if err != nil {
 			return err
 		}
@@ -46,54 +46,47 @@ func unZipArchive(archive string, target string) error {
 }
 
 // Install Terraform versions
-func Install(version string, quiet bool) error {
-
-	// Lauch Terraform download
-	check, err := Download(version, quiet)
-
-	// Check if download is ok and install
-	if check && err == nil {
-		// UnZip archive
-		ShowMessage("\033[1;33mInstall the binary file ...", quiet)
-		if err = unZipArchive(filepath.Join(home, tfVersionHomePath, fmt.Sprintf("/terraform-%s.zip", version)), filepath.Join(home, tfVersionHomeBin)); err != nil {
-			return err
-		}
-
-		// Save version in file
-		if err = ioutil.WriteFile(filepath.Join(home, tfVersionHomePath, ".version"), []byte(version), 0600); err != nil {
-			return err
-		}
-
-		ShowMessage(fmt.Sprintf("\033[1;32mv%s installed ♥", version), quiet)
+func (release Release) Install(quiet bool) error {
+	// UnZip archive
+	ShowMessage("\033[1;33mInstall the binary file ...", quiet)
+	if err := release.unZip(filepath.Join(release.Home, folders["tmp"], fmt.Sprintf("/terraform-%s.zip", release.Version)), filepath.Join(release.Home, folders["bin"])); err != nil {
+		return err
 	}
 
-	return err
+	// Save version in file
+	if err := ioutil.WriteFile(filepath.Join(release.Home, folders["tmp"], ".version"), []byte(release.Version), 0600); err != nil {
+		return err
+	}
+
+	ShowMessage(fmt.Sprintf("\033[1;32mv%s installed ♥", release.Version), quiet)
+
+	return nil
 }
 
 // UnInstall Terraform versions
-func UnInstall(version string, quiet bool) error {
+func (release Release) UnInstall(quiet bool) error {
 	var (
 		files []os.FileInfo
 		count int
 	)
 
-	files, err = ioutil.ReadDir(filepath.Join(home, tfVersionHomePath))
+	files, err := ioutil.ReadDir(filepath.Join(release.Home, folders["tmp"]))
 	if err != nil {
 		return err
 	}
 
 	for _, file := range files {
-		if version != "all" {
-			if file.Name() == fmt.Sprintf("terraform-%s.zip", version) {
-				if err = os.Remove(filepath.Join(home, tfVersionHomePath, file.Name())); err != nil {
+		if release.Version != "all" {
+			if file.Name() == fmt.Sprintf("terraform-%s.zip", release.Version) {
+				if err = os.Remove(filepath.Join(release.Home, folders["tmp"], file.Name())); err != nil {
 					return err
 				}
 
-				ShowMessage(fmt.Sprintf("\033[1;32mVersion %s is deleted !\n", version), quiet)
+				ShowMessage(fmt.Sprintf("\033[1;32mVersion %s is deleted !\n", release.Version), quiet)
 				return nil
 			}
-		} else if version == "all" {
-			if err = os.Remove(filepath.Join(home, tfVersionHomePath, file.Name())); err != nil {
+		} else if release.Version == "all" {
+			if err = os.Remove(filepath.Join(release.Home, folders["tmp"], file.Name())); err != nil {
 				return err
 			}
 

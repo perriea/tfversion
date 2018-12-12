@@ -1,6 +1,10 @@
 package cmd
 
 import (
+	"crypto/tls"
+	"errors"
+	"net/http"
+
 	"github.com/perriea/tfversion/terraform"
 	"github.com/spf13/cobra"
 )
@@ -10,14 +14,43 @@ var installCmd = &cobra.Command{
 	Use:   "install [version]",
 	Short: "Install a new version",
 	Long:  `Install a new version or switch.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) > 0 {
-			if err = terraform.Install(args[0], quiet); err != nil {
-				panic(err)
-			}
-		} else {
-			cmd.Help()
+	PreRunE: func(cmd *cobra.Command, args []string) error {
+		release = terraform.Release{
+			Home:       home,
+			HTTPclient: &http.Client{Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}},
+			Repository: "releases.hashicorp.com/terraform/%s/terraform_%s_%s_%s.zip",
 		}
+
+		return release.InitFolder()
+	},
+	RunE: func(cmd *cobra.Command, args []string) error {
+		// Check argument number
+		if len(args) > 0 {
+			// affect value version
+			release.Version = args[0]
+
+			// Check this value
+			if release.Regex() {
+				// Check if release is stocked in localy & remotely
+				if release.LocalExist() {
+					return release.Install(quiet)
+				} else if release.RemoteExist() {
+					if err := release.Download(quiet); err != nil {
+						return err
+					}
+
+					if err := release.Install(quiet); err != nil {
+						return err
+					}
+
+					return nil
+				}
+
+				return nil
+			}
+		}
+
+		return errors.New("Argument(s) missing")
 	},
 }
 

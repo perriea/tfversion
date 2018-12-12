@@ -6,7 +6,10 @@ import (
 	"path/filepath"
 )
 
-var folders map[string]string
+var (
+	folders map[string]string
+	err     error
+)
 
 // Release struct : information switch release
 type Release struct {
@@ -18,7 +21,7 @@ type Release struct {
 }
 
 // InitFolder : Create folders (init)
-func (release Release) initFolder() error {
+func (release Release) InitFolder() error {
 	for _, folder := range folders {
 		err := os.MkdirAll(filepath.Join(release.Home, folder), os.FileMode(0755))
 		if err != nil {
