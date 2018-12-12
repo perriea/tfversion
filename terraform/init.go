@@ -1,6 +1,7 @@
 package terraform
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -30,6 +31,13 @@ func (release Release) InitFolder() error {
 	}
 
 	return nil
+}
+
+// Message : Quiet mode
+func Message(message string, quiet bool) {
+	if !quiet {
+		fmt.Println(message)
+	}
 }
 
 func init() {
