@@ -7,7 +7,40 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"runtime"
 )
+
+// Download : Launch download
+func (release Release) Download(quiet bool) error {
+	// Formulation URL Terraform Website
+	url := fmt.Sprintf(release.Repository, release.Version, release.Version, runtime.GOOS, runtime.GOARCH)
+
+	// Request GET URL
+	resp, err := release.HTTPclient.Get("https://" + url)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	// Verify code equal 200
+	if (err == nil) && (resp.StatusCode == 200) {
+		Message("\033[1;32mStart download ...\n", quiet)
+		fileUnzip, err := os.Create(fmt.Sprintf("%s%sterraform-%s.zip", release.Home, folders["tmp"], release.Version))
+		if err != nil {
+			return err
+		}
+		defer fileUnzip.Close()
+
+		// Copy reponse in file
+		_, err = io.Copy(fileUnzip, resp.Body)
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+	Message("\033[1;31m[ERROR] Failed, this version doesn't exist !", quiet)
+	return nil
+}
 
 // UnZipFile : UnZip one file
 func (release Release) unZip(archive string, target string) error {
@@ -48,7 +81,7 @@ func (release Release) unZip(archive string, target string) error {
 // Install Terraform versions
 func (release Release) Install(quiet bool) error {
 	// UnZip archive
-	ShowMessage("\033[1;33mInstall the binary file ...", quiet)
+	Message("Install the binary file ...", quiet)
 	if err := release.unZip(filepath.Join(release.Home, folders["tmp"], fmt.Sprintf("/terraform-%s.zip", release.Version)), filepath.Join(release.Home, folders["bin"])); err != nil {
 		return err
 	}
@@ -58,47 +91,7 @@ func (release Release) Install(quiet bool) error {
 		return err
 	}
 
-	ShowMessage(fmt.Sprintf("\033[1;32mv%s installed ♥", release.Version), quiet)
-
-	return nil
-}
-
-// UnInstall Terraform versions
-func (release Release) UnInstall(quiet bool) error {
-	var (
-		files []os.FileInfo
-		count int
-	)
-
-	files, err := ioutil.ReadDir(filepath.Join(release.Home, folders["tmp"]))
-	if err != nil {
-		return err
-	}
-
-	for _, file := range files {
-		if release.Version != "all" {
-			if file.Name() == fmt.Sprintf("terraform-%s.zip", release.Version) {
-				if err = os.Remove(filepath.Join(release.Home, folders["tmp"], file.Name())); err != nil {
-					return err
-				}
-
-				ShowMessage(fmt.Sprintf("\033[1;32mVersion %s is deleted !\n", release.Version), quiet)
-				return nil
-			}
-		} else if release.Version == "all" {
-			if err = os.Remove(filepath.Join(release.Home, folders["tmp"], file.Name())); err != nil {
-				return err
-			}
-
-			count++
-		}
-	}
-
-	if count == 0 {
-		ShowMessage("\033[1;34mNo version has been removed", quiet)
-	} else {
-		ShowMessage("\033[1;34mAll versions have been removed", quiet)
-	}
+	Message(fmt.Sprintf("v%s installed ♥", release.Version), quiet)
 
 	return nil
 }
