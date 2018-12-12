@@ -10,18 +10,26 @@ var removeCmd = &cobra.Command{
 	Use:   "remove [version]",
 	Short: "Remove local version of Terraform",
 	Long:  `Remove local version of Terraform`,
-	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) > 0 && !all {
-			if err = terraform.UnInstall(args[0], quiet); err != nil {
-				panic(err)
-			}
-		} else if all {
-			if err = terraform.UnInstall("all", quiet); err != nil {
-				panic(err)
-			}
-		} else {
-			cmd.Help()
+	PreRunE: func(cmd *cobra.Command, args []string) error {
+		release = terraform.Release{
+			Home: home,
 		}
+
+		return nil
+	},
+	RunE: func(cmd *cobra.Command, args []string) error {
+		// Check argument number
+		if len(args) > 0 && !all {
+			// affect value version
+			release.Version = args[0]
+			if release.Regex() {
+				return release.UnInstall(quiet)
+			}
+		} else if len(args) == 0 && all {
+			return release.UnInstallAll(quiet)
+		}
+
+		return nil
 	},
 }
 
