@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM alpine:3.8
 
 LABEL MAINTAINER "Aurelien PERRIER <a.perrier89@gmail.com>"
 LABEL APP "tfversion"
@@ -6,4 +6,4 @@ LABEL APP "tfversion"
 ENV TERRAFORM_PATH /root/.tfversion/bin
 ENV PATH "$PATH:${TERRAFORM_PATH}"
 
-COPY ./tfversion /usr/bin
+COPY ./bin/tfversion /usr/bin
