@@ -19,11 +19,7 @@ func stringInSlice(str string, list []string) bool {
 }
 
 func showList(list []string, tfversion string) {
-	var (
-		max int
-		i   int
-		k   int
-	)
+	var max, i, k int
 
 	i = 0
 	max = 10
@@ -43,9 +39,11 @@ func showList(list []string, tfversion string) {
 					reslist = append(reslist, newlist)
 				}
 			}
+
 			k++
 			i++
 		}
+
 		k = 0
 	}
 
@@ -54,13 +52,11 @@ func showList(list []string, tfversion string) {
 }
 
 // ListOnline : List online version
-func ListOnline() error {
-	var (
-		versions []string
-		cleaned  []string
-	)
+func (release Release) ListOnline() error {
+	var versions, cleaned []string
 
-	resp, err := client.Get(urlHashicorp)
+	// Request GET URL
+	resp, err := release.HTTPclient.Get("https://" + release.Repository)
 	if err != nil {
 		return err
 	}
@@ -68,7 +64,7 @@ func ListOnline() error {
 
 	// Verify code equal 200
 	if (err == nil) && (resp.StatusCode == 200) {
-		r, err := regexp.Compile("[0-9]+\\.[0-9]+\\.[0-9]+(-(rc|beta)[0-9]+)?")
+		r, err := regexp.Compile("[0-9]+\\.[0-9]+\\.[0-9]+(-(rc|beta|alpha)[0-9]+)?")
 		if err != nil {
 			return err
 		}
@@ -78,7 +74,7 @@ func ListOnline() error {
 		buf.ReadFrom(resp.Body)
 		newStr := buf.String()
 
-		fmt.Printf("\033[1;34mVersions available of Terraform :\n")
+		fmt.Printf("Versions available of Terraform :\n")
 		versions = r.FindAllString(newStr, -1)
 
 		// Clean doublon
