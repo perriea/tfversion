@@ -29,15 +29,6 @@ install: fmt
 fmt:
 	gofmt -w $(SOURCES)
 
-vendor-status:
-	@govendor status
-
-vendor-list:
-	@govendor list
-
-vendor-update:
-	@govendor update +vendor
-
 docker:
 	@echo "Build binary ..."
 	@GOOS=linux $(GOBUILD) -i -o ./$(BIN) ./
@@ -60,4 +51,4 @@ vet:
 clean:
 	$(RM) ${BIN}
 
-.PHONY: help build install fmt vendor-status vendor-list vendor-update docker test vet clean
+.PHONY: help build install fmt docker test vet clean
