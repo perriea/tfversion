@@ -24,7 +24,8 @@ func (release Release) Download(quiet bool) error {
 
 	// Verify code equal 200
 	if (err == nil) && (resp.StatusCode == 200) {
-		Message("\033[1;32mStart download ...\n", quiet)
+		Message("Start download ...\n", quiet)
+
 		fileUnzip, err := os.Create(fmt.Sprintf("%s%sterraform-%s.zip", release.Home, folders["tmp"], release.Version))
 		if err != nil {
 			return err
@@ -33,12 +34,12 @@ func (release Release) Download(quiet bool) error {
 
 		// Copy reponse in file
 		_, err = io.Copy(fileUnzip, resp.Body)
-		if err != nil {
-			return err
-		}
-		return nil
+
+		return err
 	}
-	Message("\033[1;31m[ERROR] Failed, this version doesn't exist !", quiet)
+
+	Message("Failed, this version doesn't exist !", quiet)
+
 	return nil
 }
 
@@ -70,9 +71,8 @@ func (release Release) unZip(archive string, target string) error {
 		defer targetFile.Close()
 
 		_, err = io.Copy(targetFile, fileReader)
-		if err != nil {
-			return err
-		}
+
+		return err
 	}
 
 	return err
