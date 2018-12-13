@@ -13,7 +13,7 @@
 
 ``` shell
 ➜  ~ ✗ tfversion
-tfversion v0.1.5 - Switcher Terraform
+tfversion v0.1.6 - Switcher Terraform
 
 Usage:
   tfversion [command]
@@ -37,15 +37,6 @@ Use "tfversion [command] --help" for more information about a command.
 
 Pull image `docker pull perriea/tfversion:latest`.   
 Execute command in the terminal : `docker run -it perriea/tfversion`.   
-
-## Dependancies
-
-- [spf13/cobra](https://github.com/spf13/cobra),
-- [google/go-github](https://github.com/google/go-github)
-
-## Used by
-
-- [perriea/tfwrapper](https://github.com/perriea/tfwrapper)
 
 ## License
 
