@@ -11,7 +11,7 @@ import (
 
 // Regex version submited
 func (release Release) Regex() bool {
-	match, err := regexp.MatchString("[0-9]+\\.[0-9]+\\.[0-9]+(-(rc|beta)[0-9]+)?", release.Version)
+	match, err := regexp.MatchString("[0-9]+\\.[0-9]+\\.[0-9]+(-(rc|beta|alpha)[0-9]+)?", release.Version)
 	if err != nil {
 		return false
 	}
@@ -31,9 +31,8 @@ func (release Release) LocalExist() bool {
 
 // RemoteExist version zipped online
 func (release Release) RemoteExist() bool {
-	callurl := fmt.Sprintf(release.Repository, release.Version, release.Version, runtime.GOOS, runtime.GOARCH)
-	fmt.Println(callurl)
-	resp, err := release.HTTPclient.Get("https://" + callurl)
+	url := fmt.Sprintf(release.Repository, release.Version, release.Version, runtime.GOOS, runtime.GOARCH)
+	resp, err := release.HTTPclient.Get("https://" + url)
 	if err != nil {
 		fmt.Println(err)
 		return false
