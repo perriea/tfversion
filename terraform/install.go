@@ -24,7 +24,7 @@ func (release Release) Download(quiet bool) error {
 
 	// Verify code equal 200
 	if (err == nil) && (resp.StatusCode == 200) {
-		Message("Start download ...\n", quiet)
+		Message("Downloading ...", quiet)
 
 		fileUnzip, err := os.Create(fmt.Sprintf("%s%sterraform-%s.zip", release.Home, folders["tmp"], release.Version))
 		if err != nil {
@@ -81,7 +81,7 @@ func (release Release) unZip(archive string, target string) error {
 // Install Terraform versions
 func (release Release) Install(quiet bool) error {
 	// UnZip archive
-	Message("Install the binary file ...", quiet)
+	Message("Installing ...", quiet)
 	if err := release.unZip(filepath.Join(release.Home, folders["tmp"], fmt.Sprintf("/terraform-%s.zip", release.Version)), filepath.Join(release.Home, folders["bin"])); err != nil {
 		return err
 	}
