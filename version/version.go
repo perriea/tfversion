@@ -7,7 +7,7 @@ import (
 )
 
 // Version number that is being run at the moment.
-const Version = "0.1.4"
+const Version = "0.1.6"
 
 // Repository Git
 const Repository = "https://github.com/perriea/tfversion"
@@ -15,7 +15,7 @@ const Repository = "https://github.com/perriea/tfversion"
 // Prerelease marker for the version. If this is "" (empty string)
 // then it means that it is a final release. Otherwise, this is a pre-release
 // such as "dev" (in development), "beta", "rc1", etc.
-var Prerelease = "dev"
+var Prerelease = ""
 
 // SemVer is an instance of version.Version. This has the secondary
 // benefit of verifying during tests and init time that our version is a
