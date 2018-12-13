@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"errors"
 	"net/http"
+	"time"
 
 	"github.com/perriea/tfversion/terraform"
 	"github.com/spf13/cobra"
@@ -17,7 +18,7 @@ var installCmd = &cobra.Command{
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		release = terraform.Release{
 			Home:       home,
-			HTTPclient: &http.Client{Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}},
+			HTTPclient: &http.Client{Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}, Timeout: time.Duration(5 * time.Second)},
 			Repository: "releases.hashicorp.com/terraform/%s/terraform_%s_%s_%s.zip",
 		}
 

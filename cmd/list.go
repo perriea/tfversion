@@ -3,6 +3,7 @@ package cmd
 import (
 	"crypto/tls"
 	"net/http"
+	"time"
 
 	"github.com/perriea/tfversion/terraform"
 	"github.com/spf13/cobra"
@@ -16,7 +17,7 @@ var listCmd = &cobra.Command{
 	PreRun: func(cmd *cobra.Command, args []string) {
 		release = terraform.Release{
 			Home:       home,
-			HTTPclient: &http.Client{Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}},
+			HTTPclient: &http.Client{Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}, Timeout: time.Duration(5 * time.Second)},
 			Repository: "releases.hashicorp.com/terraform/",
 		}
 	},
