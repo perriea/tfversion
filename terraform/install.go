@@ -2,32 +2,37 @@ package terraform
 
 import (
 	"archive/zip"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
+	"net/http"
 	"os"
 	"path/filepath"
 	"runtime"
 )
 
 // Download : Launch download
-func (release Release) Download(quiet bool) error {
-	// Formulation URL Terraform Website
-	url := fmt.Sprintf(release.Repository, release.Version, release.Version, runtime.GOOS, runtime.GOARCH)
+func (r *Release) download(quiet bool) error {
+	var (
+		url       string = fmt.Sprintf(PathTerraform.toString(), r.Version, r.Version, runtime.GOOS, runtime.GOARCH)
+		path      string = fmt.Sprintf("%s%sterraform-%s.zip", r.Home, PathTmp.toString(), r.Version)
+		resp      *http.Response
+		fileUnzip *os.File
+		err       error
+	)
 
 	// Request GET URL
-	resp, err := release.HTTPclient.Get("https://" + url)
-	if err != nil {
+	if resp, err = r.HTTPclient.Get(url); err != nil {
 		return err
 	}
 	defer resp.Body.Close()
 
 	// Verify code equal 200
-	if (err == nil) && (resp.StatusCode == 200) {
+	if resp.StatusCode == http.StatusOK {
 		Message("Downloading ...", quiet)
 
-		fileUnzip, err := os.Create(fmt.Sprintf("%s%sterraform-%s.zip", release.Home, folders["tmp"], release.Version))
-		if err != nil {
+		if fileUnzip, err = os.Create(path); err != nil {
 			return err
 		}
 		defer fileUnzip.Close()
@@ -38,34 +43,36 @@ func (release Release) Download(quiet bool) error {
 		return err
 	}
 
-	Message("Failed, this version doesn't exist !", quiet)
-
-	return nil
+	return errors.New("failed, this version doesn't exist")
 }
 
 // UnZipFile : UnZip one file
-func (release Release) unZip(archive string, target string) error {
+func (r *Release) unZip(archive string, target string) error {
+	var (
+		path       string
+		fileReader io.ReadCloser
+		reader     *zip.ReadCloser
+		targetFile *os.File
+		err        error
+	)
 
-	reader, err := zip.OpenReader(filepath.Join(archive))
-	if err != nil {
+	if reader, err = zip.OpenReader(filepath.Join(archive)); err != nil {
 		return err
 	}
 
 	for _, file := range reader.File {
-		path := filepath.Join(target, file.Name)
+		path = filepath.Join(target, file.Name)
 		if file.FileInfo().IsDir() {
 			os.MkdirAll(path, file.Mode())
 			continue
 		}
 
-		fileReader, err := file.Open()
-		if err != nil {
+		if fileReader, err = file.Open(); err != nil {
 			return err
 		}
 		defer fileReader.Close()
 
-		targetFile, err := os.OpenFile(filepath.Join(release.Home, folders["bin"], "terraform"), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, file.Mode())
-		if err != nil {
+		if targetFile, err = os.OpenFile(filepath.Join(r.Home, PathBin.toString(), "terraform"), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, file.Mode()); err != nil {
 			return err
 		}
 		defer targetFile.Close()
@@ -79,19 +86,23 @@ func (release Release) unZip(archive string, target string) error {
 }
 
 // Install Terraform versions
-func (release Release) Install(quiet bool) error {
+func (r *Release) install(quiet bool) error {
+	var (
+		err error
+	)
+
 	// UnZip archive
 	Message("Installing ...", quiet)
-	if err := release.unZip(filepath.Join(release.Home, folders["tmp"], fmt.Sprintf("/terraform-%s.zip", release.Version)), filepath.Join(release.Home, folders["bin"])); err != nil {
+	if err = r.unZip(filepath.Join(r.Home, PathTmp.toString(), fmt.Sprintf("/terraform-%s.zip", r.Version)), filepath.Join(r.Home, PathBin.toString())); err != nil {
 		return err
 	}
 
 	// Save version in file
-	if err := ioutil.WriteFile(filepath.Join(release.Home, folders["tmp"], ".version"), []byte(release.Version), 0600); err != nil {
+	if err = ioutil.WriteFile(filepath.Join(r.Home, PathTmp.toString(), ".version"), []byte(r.Version), 0600); err != nil {
 		return err
 	}
 
-	Message(fmt.Sprintf("v%s installed ♥", release.Version), quiet)
+	Message(fmt.Sprintf("v%s installed ♥", r.Version), quiet)
 
 	return nil
 }

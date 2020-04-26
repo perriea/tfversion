@@ -2,32 +2,31 @@ package terraform
 
 import (
 	"fmt"
-	"net/http"
 	"os"
 	"path/filepath"
 )
 
-var (
-	folders map[string]string
-	err     error
-)
+// CreateFolder on disk
+func (r *Release) CreateFolder(folder string) error {
+	var err error
 
-// Release struct : information switch release
-type Release struct {
-	Home         string
-	Version      string
-	Repository   string
-	HTTPclient   *http.Client
-	HTTPResponse *http.Response
+	if err = os.MkdirAll(filepath.Join(r.Home, folder), os.FileMode(0755)); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // InitFolder : Create folders (init)
-func (release Release) InitFolder() error {
-	for _, folder := range folders {
-		err := os.MkdirAll(filepath.Join(release.Home, folder), os.FileMode(0755))
-		if err != nil {
-			return err
-		}
+func (r *Release) InitFolder() error {
+	var err error
+
+	if err = r.CreateFolder(PathBin.toString()); err != nil {
+		return err
+	}
+
+	if err = r.CreateFolder(PathTmp.toString()); err != nil {
+		return err
 	}
 
 	return nil
@@ -37,12 +36,5 @@ func (release Release) InitFolder() error {
 func Message(message string, quiet bool) {
 	if !quiet {
 		fmt.Println(message)
-	}
-}
-
-func init() {
-	folders = map[string]string{
-		"bin": "/.tfversion/bin/",
-		"tmp": "/.tfversion/tmp/",
 	}
 }
