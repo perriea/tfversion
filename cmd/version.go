@@ -1,10 +1,10 @@
-package cmd
+package main
 
 import (
 	"fmt"
 	"runtime"
 
-	"github.com/perriea/tfversion/version"
+	"github.com/perriea/tfversion/github"
 	"github.com/spf13/cobra"
 )
 
@@ -14,10 +14,10 @@ var versionCmd = &cobra.Command{
 	Short: "Version installed",
 	Long:  `Version installed of switcher Terraform`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("tfversion v%s\n\n", version.String())
+		fmt.Printf("tfversion %s\n\n", version)
 
 		// Show if the last version
-		latest, release := version.LastVersion()
+		latest, release := github.LastVersion(version)
 		if latest && release != nil {
 			switch runtime.GOOS {
 			case "darwin":

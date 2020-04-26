@@ -1,11 +1,10 @@
-package cmd
+package main
 
 import (
 	"fmt"
 	"os"
 
 	"github.com/perriea/tfversion/terraform"
-	"github.com/perriea/tfversion/version"
 	"github.com/spf13/cobra"
 )
 
@@ -19,8 +18,8 @@ var (
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "tfversion",
-	Short: fmt.Sprintf("tfversion v%s - Switcher Terraform", version.String()),
-	Long:  fmt.Sprintf("tfversion v%s - Switcher Terraform", version.String()),
+	Short: fmt.Sprintf("tfversion %s - Switcher Terraform", version),
+	Long:  fmt.Sprintf("tfversion %s - Switcher Terraform", version),
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
