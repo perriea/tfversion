@@ -29,16 +29,9 @@ Flags:
   -h, --help   help for tfversion
 
 Use "tfversion [command] --help" for more information about a command.
-```
-
-## Docker
-
-### Install
-
-Pull image `docker pull perriea/tfversion:latest`.   
-Execute command in the terminal : `docker run -it perriea/tfversion`.   
+``` 
 
 ## License
 
 The MIT License (MIT)   
-Copyright (c) 2017-2018 Aurelien PERRIER
+Copyright (c) 2017-2020 Aurelien PERRIER
