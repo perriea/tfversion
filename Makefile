@@ -16,12 +16,12 @@ endif
 all: tfversion
 
 tfversion:
-	$(GOLANG_ENV) go build $(LDFLAGS) -o build/tfversion .
+	$(GOLANG_ENV) go build $(LDFLAGS) -o build/tfversion $(PWD)/cmd
 
 release:
 	for arch in amd64; do \
 		for os in linux darwin; do \
-			$(GOLANG_ENV) GOOS=$$os GOARCH=$$arch go build -o "build/tfversion_"$$os"_$$arch" $(LDFLAGS) -ldflags "-X main.version=$(IMAGE_TAG)" .; \
+			$(GOLANG_ENV) GOOS=$$os GOARCH=$$arch go build -o "build/tfversion_"$$os"_$$arch" $(LDFLAGS) -ldflags "-X main.version=$(IMAGE_TAG)" $(PWD)/cmd; \
 		done; \
 	done;
 
@@ -33,7 +33,7 @@ race:
 	go test -race -coverprofile=coverage.txt -covermode=atomic ${PKG_LIST}
 
 graph:
-	go-callvis -file=data -format=png -group pkg -focus="" -limit github.com/perriea/tfversion .
+	go-callvis -file=data -format=png -group pkg -focus="" -limit github.com/perriea/tfversion $(PWD)/cmd
 
 test:
 	go test ${TEST_FLAGS} ${PKG_LIST}
