@@ -10,39 +10,52 @@ import (
 )
 
 // Regex version submited
-func (release Release) Regex() bool {
-	match, err := regexp.MatchString("[0-9]+\\.[0-9]+\\.[0-9]+(-(rc|beta|alpha)[0-9]+)?", release.Version)
-	if err != nil {
+func (r *Release) Regex() bool {
+	var (
+		rmatch string = "[0-9]+\\.[0-9]+\\.[0-9]+(-(rc|beta|alpha)[0-9]+)?"
+		match  bool   = false
+		err    error
+	)
+
+	if match, err = regexp.MatchString(rmatch, r.Version); err != nil {
 		return false
 	}
 
 	return match
 }
 
-// LocalExist version zipped offline
-func (release Release) LocalExist() bool {
-	if _, err := os.Stat(filepath.Join(release.Home, folders["tmp"], fmt.Sprintf("terraform-%s.zip", release.Version))); !os.IsNotExist(err) {
+// localExist version zipped offline
+func (r *Release) localExist() error {
+	var (
+		version string = fmt.Sprintf("terraform-%s.zip", r.Version)
+		err     error
+	)
+
+	if _, err = os.Stat(filepath.Join(r.Home, PathTmp.toString(), version)); !os.IsNotExist(err) {
 		fmt.Println("Already in cache ...")
-		return true
+		return err
 	}
 
-	return false
+	return nil
 }
 
-// RemoteExist version zipped online
-func (release Release) RemoteExist() bool {
-	url := fmt.Sprintf(release.Repository, release.Version, release.Version, runtime.GOOS, runtime.GOARCH)
-	resp, err := release.HTTPclient.Get("https://" + url)
-	if err != nil {
-		fmt.Println(err)
-		return false
+// remoteExist version zipped online
+func (r *Release) remoteExist() error {
+	var (
+		url  string = fmt.Sprintf(PathTerraform.toString(), r.Version, r.Version, runtime.GOOS, runtime.GOARCH)
+		resp *http.Response
+		err  error
+	)
+
+	if resp, err = r.HTTPclient.Get(url); err != nil {
+		return err
 	}
 	defer resp.Body.Close()
 
 	// Verify code equal 200
-	if (err == nil) && (resp.StatusCode == http.StatusOK) {
-		return true
+	if resp.StatusCode == http.StatusOK {
+		return nil
 	}
 
-	return false
+	return nil
 }

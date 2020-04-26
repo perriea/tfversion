@@ -3,6 +3,7 @@ package terraform
 import (
 	"bytes"
 	"fmt"
+	"net/http"
 	"regexp"
 
 	"github.com/ryanuber/columnize"
@@ -52,18 +53,21 @@ func showList(list []string, tfversion string) {
 }
 
 // ListOnline : List online version
-func (release Release) ListOnline() error {
-	var versions, cleaned []string
+func (r *Release) ListOnline() error {
+	var (
+		versions, cleaned []string
+		resp              *http.Response
+		err               error
+	)
 
 	// Request GET URL
-	resp, err := release.HTTPclient.Get("https://" + release.Repository)
-	if err != nil {
+	if resp, err = r.HTTPclient.Get(PathTerraformIndex.toString()); err != nil {
 		return err
 	}
 	defer resp.Body.Close()
 
 	// Verify code equal 200
-	if (err == nil) && (resp.StatusCode == 200) {
+	if (err == nil) && (resp.StatusCode == http.StatusOK) {
 		r, err := regexp.Compile("[0-9]+\\.[0-9]+\\.[0-9]+(-(rc|beta|alpha)[0-9]+)?")
 		if err != nil {
 			return err
